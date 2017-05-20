@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.module.ModuleWriteMapper">
+
+    <resultMap id="Module" type="com.mdm.pojo.Module">
+                    <result property="id" column="id"/>
+                    <result property="moduleName" column="ModuleName"/>
+                    <result property="parentId" column="ParentId"/>
+                    <result property="moduleLevel" column="ModuleLevel"/>
+                    <result property="moduleSort" column="ModuleSort"/>
+                    <result property="moduleState" column="ModuleState"/>
+                    <result property="moduleUrl" column="ModuleUrl"/>
+                    <result property="moduleIcon" column="ModuleIcon"/>
+                    <result property="description" column="Description"/>
+                    <result property="remark" column="Remark"/>
+                    <result property="isDeleted" column="IsDeleted"/>
+                    <result property="createdBy" column="CreatedBy"/>
+                    <result property="createdOn" column="CreatedOn"/>
+                    <result property="modifiedBy" column="ModifiedBy"/>
+                    <result property="modifiedOn" column="ModifiedOn"/>
+                    <result property="path" column="Path"/>
+                    <association property="parent" javaType="com.mdm.pojo.Module" resultMap="ParentModule"/>
+                    <collection property="operationList" ofType="com.mdm.pojo.Operation" column="moduleId">  
+		            	<id column="o_id" property="id"/>  
+		            	<result column="ActionName" property="actionName"/>  
+		        	</collection>  
+            </resultMap>
+            
+            <resultMap id="ParentModule" type="com.mdm.pojo.Module">
+                    <result property="moduleName" column="parentModuleName"/>
+                    <result property="moduleState" column="parentModuleState"/>
+                    <result property="path" column="parentPath"/>
+            </resultMap>
+
+    <insert id="insert">
+        insert into Module (
+                                            id
+                                                                ,  ModuleName
+                                                ,  ParentId
+                                                ,  ModuleSort
+                                                ,  ModuleState
+                                                ,  ModuleUrl
+                                                ,  ModuleLevel
+                                                ,  ModuleIcon
+                                                ,  Description
+                                                ,  Remark
+                                                ,  CreatedBy
+                                                ,  CreatedOn
+                                                ,  ModifiedBy
+                                                ,  ModifiedOn
+                                                ,  Path
+                            ) values (
+                                            #{id}
+                                                                                    , #{moduleName}
+                                                                                    , #{parentId}
+                                                                                    , #{moduleSort}
+                                                                                    , #{moduleState}
+                                                                                    , #{moduleUrl}
+                                                                                    , #{moduleLevel}
+                                                                                    , #{moduleIcon}
+                                                                                    , #{description}
+                                                                                    , #{remark}
+                                                                                    , #{createdBy}
+                                                                                    , #{createdOn}
+                                                                                    , #{modifiedBy}
+                                                                                    , #{modifiedOn}
+                                                                                    , #{path}
+                                            )
+    </insert>
+
+    <update id="update">
+        update
+        	Module
+        set
+			ModuleName = #{moduleName},
+            ParentId = #{parentId},
+			ModuleSort = #{moduleSort},
+			ModuleState = #{moduleState},
+			ModuleUrl = #{moduleUrl},
+			ModuleLevel = #{moduleLevel},
+			Description = #{description},
+			ModifiedBy = #{modifiedBy},
+			ModifiedOn = #{modifiedOn},
+			Path = #{path} 
+        where
+			id = #{id}
+    </update>
+
+    <select id="getById" resultMap="Module">
+        select
+                                            id
+                                                , ModuleName
+                                                , ParentId
+                                                , ModuleLevel
+                                                , ModuleSort
+                                                , ModuleState
+                                                , ModuleUrl
+                                                , ModuleIcon
+                                                , Description
+                                                , Remark
+                                                , IsDeleted
+                                                , CreatedBy
+                                                , CreatedOn
+                                                , ModifiedBy
+                                                , ModifiedOn
+                                                , Path
+                            from
+        Module
+                    where
+                                                                                    id = #{id}
+	</select>
+
+	<update id="deleteByPath">
+        update
+        	Module
+        set
+        	IsDeleted = #{isDeleted}
+        ,	ModifiedBy = #{modifiedBy}
+        , 	ModifiedOn = #{modifiedOn}
+        where
+			Path like CONCAT(#{path},'%')
+	</update>
+
+    <select id="queryList" parameterType="map"
+            resultMap="Module">
+        select
+                                            a.id
+                                                , a.ModuleName
+                                                , a.ParentId
+                                                , a.ModuleLevel
+                                                , a.ModuleSort
+                                                , a.ModuleState
+                                                , a.ModuleUrl
+                                                , a.ModuleIcon
+                                                , a.Description
+                                                , a.Remark
+                                                , a.IsDeleted
+                                                , a.CreatedBy
+                                                , a.CreatedOn
+                                                , a.ModifiedBy
+                                                , a.ModifiedOn
+                                                , a.Path
+                                                , b.ModuleName as parentModuleName
+                                                , b.ModuleState as parentModuleState
+                                                , b.Path as parentPath
+                            from
+        Module a left join Module b on a.ParentId = b.Id
+        <where>
+        	<if test="isDeleted != null">and a.IsDeleted = #{isDeleted}</if>
+        	<if test="moduleName != null and moduleName != ''">and a.ModuleName LIKE CONCAT('%',#{moduleName},'%')</if>
+ 			<if test="status != null and status != ''">and a.ModuleState = #{status}</if>       
+        </where>
+        order by
+        	a.CreatedOn	desc
+    </select>
+    
+    <select id="queryAll"  parameterType="map" resultMap="Module">
+        select
+                                            id
+                                                , ModuleName
+                                                , ParentId
+                                                , ModuleLevel
+                                                , ModuleSort
+                                                , ModuleState
+                                                , ModuleUrl
+                                                , ModuleIcon
+                                                , Description
+                                                , Remark
+                                                , IsDeleted
+                                                , CreatedBy
+                                                , CreatedOn
+                                                , ModifiedBy
+                                                , ModifiedOn
+                                                , Path
+                            from
+        Module
+        <where>
+        	<if test="isDeleted != null">and IsDeleted = #{isDeleted}</if>
+        	<if test="moduleState != null">and ModuleState = #{moduleState}</if>
+        </where>
+        order by
+        	id
+    </select>
+    
+    <select id="getParent" resultMap="Module">
+        select
+                                            id
+                                                , ModuleName
+                                                , ParentId
+                                                , ModuleLevel
+                                                , ModuleSort
+                                                , ModuleState
+                                                , ModuleUrl
+                                                , ModuleIcon
+                                                , Description
+                                                , Remark
+                                                , IsDeleted
+                                                , CreatedBy
+                                                , CreatedOn
+                                                , ModifiedBy
+                                                , ModifiedOn
+                                                , Path
+                            from
+        Module
+        where
+        	id = #{id}
+    </select>
+    
+    <update id="updatePath">
+        update
+        	Module
+        set
+			Path = REPLACE(Path, #{originalPath}, #{path})
+		,	ModuleLevel = ModuleLevel + #{level}
+        where
+			Path like CONCAT(#{originalPath},'%')
+    </update> 
+    
+    <update id="updateState">
+        update
+        	Module
+        set
+			ModuleState = #{moduleState} 
+        where
+			Path like CONCAT(#{path},'%')
+    </update>  
+    
+    <select id="getChildren" resultMap="Module">
+        select
+                                            id
+                                                , ModuleName
+                                                , ParentId
+                                                , ModuleLevel
+                                                , ModuleSort
+                                                , ModuleState
+                                                , ModuleUrl
+                                                , ModuleIcon
+                                                , Description
+                                                , Remark
+                                                , IsDeleted
+                                                , CreatedBy
+                                                , CreatedOn
+                                                , ModifiedBy
+                                                , ModifiedOn
+                                                , Path
+                            from
+        Module
+        where
+        	ParentId = #{parentId}
+    </select>
+    
+    
+     <update id="updateChildren">
+        update
+        	Module
+        set
+			ParentId = #{newParentId}
+		  , Path = #{path}
+        where
+			ParentId = #{oriParentId}
+    </update>
+    
+    <select id="queryModuleOperationList" resultMap="Module">
+        select
+                                            m.id
+                                                , m.ModuleName
+                                                , m.ParentId
+                                                , m.ModuleLevel
+                                                , m.ModuleSort
+                                                , m.ModuleState
+                                                , m.ModuleUrl
+                                                , m.Path
+                                                , o.ID as o_id
+                                                , o.ActionName
+                            from
+        Module m left join Operation o on m.id = o.ModuleId and o.IsDeleted = #{isDeleted}
+        where
+        	m.IsDeleted = #{isDeleted}
+    </select>    
+    
+    <select id="queryUserRoleModuleList" parameterType="map" resultMap="Module">
+        select
+                                            m.id
+                                                , m.ModuleName
+                                                , m.ParentId
+                                                , m.ModuleLevel
+                                                , m.ModuleSort
+                                                , m.ModuleState
+                                                , m.ModuleUrl
+                                                , m.Path
+                            from
+        UserOrganizationRole ur,Role r,RoleModule rm,Module m
+        where
+        	ur.UserId = #{userId}
+        and ur.IsDeleted = #{isDeleted}
+        and ur.RoleId = r.Id
+        and r.Status = #{moduleState}
+        and ur.RoleId = rm.RoleId
+        and rm.IsDeleted = #{isDeleted}
+        and rm.ModuleId = m.id
+        and m.ModuleState = #{moduleState}
+        order by m.id
+    </select>                 
+</mapper>

@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.organazation.OrganazationWriteMapper">
+
+	<sql id="select_sql">
+		Id
+		, ParentId
+		, Code
+		, CorpCode
+		, Name
+		, Status
+		, Type
+		, ContactTel
+		, ProvinceId
+		, CityId
+		, DistrictID
+		, CommunityId
+		, Longitude
+		, Latitude
+		, Addr_Details
+		, Description
+		, Levels
+		, Path
+		, ID_Organization_Type
+		, SystemId
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		, Version
+		, PointAccountId
+		, IsExcepted
+		
+   </sql>
+	<resultMap id="Organazation" type="com.mdm.pojo.Organazation">
+		<result property="id" column="Id" />
+		<result property="parentId" column="ParentId" />
+		<result property="code" column="Code" />
+		<result property="corpCode" column="CorpCode" />
+		<result property="name" column="Name" />
+		<result property="status" column="Status" />
+		<result property="type" column="Type" />
+		<result property="contactTel" column="ContactTel" />
+		<result property="provinceId" column="ProvinceId" />
+		<result property="cityId" column="CityId" />
+		<result property="districtID" column="DistrictID" />
+		<result property="communityId" column="CommunityId" />
+		<result property="longitude" column="Longitude" />
+		<result property="latitude" column="Latitude" />
+		<result property="addrDetails" column="Addr_Details" />
+		<result property="description" column="Description" />
+		<result property="levels" column="Levels" />
+		<result property="path" column="Path" />
+		<result property="idOrganizationType" column="ID_Organization_Type" />
+		<result property="systemId" column="SystemId" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="isDeleted" column="IsDeleted" />
+		<result property="version"  column="Version" />
+		<result property="pointAccountId"  column="PointAccountId" />
+		<result property="isExcepted"  column="IsExcepted" />
+	</resultMap>
+	<resultMap id="OrganizationExport" type="com.mdm.exportBean.OrganizationExport">
+		<result property="parentCode" column="ParentCode" />
+		<result property="parentName" column="ParentName" />
+		<result property="code" column="Code" />
+		<result property="type" column="Type" />
+		<result property="corpCode" column="CorpCode" />
+		<result property="name" column="Name" />
+		<result property="status" column="Status" />
+		<result property="contactTel" column="ContactTel" />
+		<result property="province" column="ProvinceId" />
+		<result property="city" column="CityId" />
+		<result property="district" column="DistrictID" />
+		<result property="community" column="CommunityId" />
+		<result property="addrDetails" column="Addr_Details" />
+		<result property="longitude" column="Longitude" />
+		<result property="latitude" column="Latitude" />
+		<result property="description" column="Description" />
+		<result property="idOrganizationType" column="ID_Organization_Type" />
+		<result property="system" column="System" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into Organazation (Id, ParentId, Code,
+		CorpCode, Name, Status, Type
+		, ContactTel
+		, ProvinceId
+		, CityId,
+		DistrictID
+		, CommunityId
+		, Longitude
+		, Latitude
+		, Addr_Details
+		,
+		Description
+		, Levels
+		, Path
+		, ID_Organization_Type
+		, SystemId
+		, CreatedOn
+		,
+		CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		, Version
+		) values (
+		#{id}
+		,
+		#{parentId}
+		, #{code}
+		, #{corpCode}
+		, #{name}
+		, #{status}
+		, #{type}
+		,
+		#{contactTel}
+		, #{provinceId}
+		, #{cityId}
+		, #{districtID}
+		, #{communityId}
+		, #{longitude}
+		, #{latitude}
+		, #{addrDetails}
+		, #{description}
+		, #{levels}
+		, #{path}
+		, #{idOrganizationType}
+		, #{systemId}
+		, #{createdOn}
+		,
+		#{createdBy}
+		, #{modifiedOn}
+		, #{modifiedBy}
+		, #{isDeleted}
+		, #{version}
+		)
+	</insert>
+
+	<update id="update">
+		update
+		Organazation
+		<set>
+			<if test="parentId != null and parentId != ''">ParentId =
+				#{parentId},
+			</if>
+			<if test="code != null and code != ''">Code =
+				#{code},
+			</if>
+			<if test="corpCode != null and corpCode != ''">CorpCode =
+				#{corpCode},
+			</if>
+			Name =
+				#{name},
+		
+			Status =
+				#{status},
+			
+			Type =
+				#{type},
+			
+			ContactTel =
+				#{contactTel},
+			<if test="provinceId != null and provinceId != ''">
+				ProvinceId = #{provinceId},
+			</if>
+			<if test="cityId != null and cityId != ''">
+				CityId = #{cityId},
+			</if>
+			<if test="districtID != null and districtID != ''">
+				DistrictID = #{districtID},
+			</if>
+			
+			CommunityId =
+				#{communityId},
+			
+			Longitude =
+				#{longitude},
+		
+			Latitude =
+				#{latitude},
+			
+			Addr_Details =
+				#{addrDetails},
+			
+			Description =
+				#{description},
+			<if test="levels != null and levels != ''">
+			Levels =
+				#{levels},
+			</if>
+			<if test="path != null and path != ''">
+			Path =
+				#{path},
+			</if>
+			<if test="idOrganizationType != null and idOrganizationType != ''">ID_Organization_Type =
+				#{idOrganizationType},
+			</if>
+			<if test="systemId != null and systemId != ''">SystemId = #{systemId},</if>
+			<if test="modifiedOn != null">ModifiedOn =
+				#{modifiedOn},
+			</if>
+			<if test="modifiedBy != null and modifiedBy != ''">ModifiedBy =
+				#{modifiedBy},
+			</if>
+			<if test="isDeleted != null">IsDeleted =
+				#{isDeleted},
+			</if>
+			<if test="version != null">Version =
+				#{version},
+			</if>
+		</set>
+		where
+		Id = #{id} and Version=#{oldVersion}
+	</update>
+
+	<update id="updateFromCss">
+		update
+		Organazation
+		<set>
+			<if test="parentId != null and parentId != ''">ParentId =
+				#{parentId},
+			</if>
+			<if test="code != null and code != ''">Code =
+				#{code},
+			</if>
+			<if test="corpCode != null and corpCode != ''">CorpCode =
+				#{corpCode},
+			</if>
+			Name =
+				#{name},
+		
+			Status =
+				#{status},
+			
+			Type =
+				#{type},
+				
+			Description =
+				#{description},
+				
+			<if test="levels != null and levels != ''">
+			Levels =
+				#{levels},
+			</if>
+			<if test="path != null and path != ''">
+			Path =
+				#{path},
+			</if>
+			<if test="idOrganizationType != null and idOrganizationType != ''">ID_Organization_Type =
+				#{idOrganizationType},
+			</if>
+			<if test="systemId != null and systemId != ''">SystemId = #{systemId},</if>
+			<if test="modifiedOn != null">ModifiedOn =
+				#{modifiedOn},
+			</if>
+			<if test="modifiedBy != null and modifiedBy != ''">ModifiedBy =
+				#{modifiedBy},
+			</if>
+			<if test="isDeleted != null">IsDeleted =
+				#{isDeleted},
+			</if>
+			<if test="version != null">Version =
+				#{version},
+			</if>
+		</set>
+		where
+		Id = #{id} and Version=#{oldVersion}
+	</update>
+
+	<select id="getById" resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		where
+		Id = #{id} and IsDeleted = '0'
+	</select>
+
+	<delete id="deleteById">
+		update
+		Organazation
+		set
+		IsDeleted = '1', ModifiedOn = now()
+		where
+		Id = #{id}
+	</delete>
+
+	<select id="queryOrganazationList" parameterType="map"
+		resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		<where>
+			IsDeleted = '0'
+			<if test="orgType !=null and orgType !=''"> and Type = #{orgType}</if>
+			<if test="orgCode !=null and orgCode !=''"> and Code like CONCAT('%',#{orgCode},'%')</if>
+			<if test="orgName !=null and orgName !=''">and Name like CONCAT('%',#{orgName},'%')</if>
+			<if test="parentId !=null and parentId !=''">and substring(Path, length(#{parentPath}) +2) like
+				CONCAT(#{parentId}, '%')</if>
+			<if test="corpCode != null and corpCode != '' and orgType !=null and orgType !='' and orgType ==3 ">
+				and ( 
+					CorpCode = #{corpCode} 
+					or (
+						CorpCode = #{corpCode} 
+						and  ParentId is null 
+						or (
+							CorpCode is null 
+							and Type = #{orgType} 
+							and ParentId is null
+							)
+						)
+					) 
+			</if>
+			<if test="corpCode != null and corpCode != '' and orgType !=null and orgType !='' and orgType !=3 ">
+				and CorpCode = #{corpCode} 
+			</if>
+			<if test="sourceid != null and sourceid != '' ">and SystemId = #{sourceid} </if>
+			<if test="beginDate != null and beginDate != ''"><![CDATA[ and CreatedOn >= #{beginDate}]]></if>
+			<if test="endDate != null and endDate != ''"><![CDATA[ and CreatedOn <= #{endDate}]]></if>
+			and ((ParentId is null And Levels = 0 ) or ParentId  is not null )
+		</where>
+	</select>
+	
+	
+	<select id="queryOrganazationListForTree" parameterType="map"
+		resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		<where>
+			IsDeleted = '0'
+			<if test="orgType !=null and orgType !=''"> and Type = #{orgType}</if>
+			<if test="corpCode != null and corpCode != '' and orgType !=null and orgType !='' and orgType ==3 ">
+				and ( 
+					CorpCode = #{corpCode} 
+					or (
+						CorpCode = #{corpCode} 
+						and  ParentId is null 
+						or (
+							CorpCode is null 
+							and Type = #{orgType} 
+							and ParentId is null
+							)
+						)
+					) 
+			</if>
+			<if test="corpCode != null and corpCode != '' and orgType !=null and orgType !='' and orgType !=3 ">
+				and CorpCode = #{corpCode} 
+			</if>
+			<if test="status != null and status != '' ">and status = #{status} </if>
+			and ((ParentId is null And Levels = 0 ) or ParentId  is not null )
+		</where>
+	</select>
+	
+	
+<select id="queryOrganazationRoot" parameterType="map"
+		resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		<where>
+			IsDeleted = '0' 	and ParentId  is null AND
+			Levels = 0
+			<if test="orgType !=null and orgType !=''"> and Type = #{orgType}</if>
+			<if test="status !=null and status !=''"> and status = #{status}</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryAllList" parameterType="map" resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation where IsDeleted = '0'
+	</select>
+
+
+	<select id="queryOrganazationByParentid" parameterType="map"
+		resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		<where>
+			IsDeleted = '0'
+			<if test="parentId !=null and parentId !=''"> and ParentId = #{parentId}</if>
+			<if test="status !=null and status !=''"> and status = #{status}</if>
+		</where>
+	</select>
+
+
+	<select id="queryByCode" parameterType="map" resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		<where>
+			<if test="code !=null and code !=''"> Code = #{code}</if>
+		</where>
+	</select>
+	
+		<select id="queryByCodeAndCorpCodeAndSystemId" parameterType="map" resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		<where>
+			<if test="code !=null and code !=''"> Code = #{code}</if>
+			<if test="corpCode != null and corpCode != '' ">and CorpCode = #{corpCode} </if>
+			<if test="systemId != null and systemId != '' ">and SystemId = #{systemId} </if>
+		</where>
+	</select>
+
+	<select id="batchGetByIds" resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		where
+		Id in (
+		<foreach collection="list" item="tfo" index="index" separator=",">
+			#{tfo}
+		</foreach>
+		)
+	</select>
+
+	<insert id="batchInsert">
+		insert into Organazation (Id, ParentId, Code,
+		CorpCode, Name, Status, Type
+		, ContactTel
+		, ProvinceId
+		, CityId
+		,
+		DistrictID
+		, CommunityId
+		, Longitude
+		, Latitude
+		, Addr_Details
+		,
+		Description
+		, Levels
+		, Path
+		, ID_Organization_Type
+		, SystemId
+		, CreatedOn
+		,
+		CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		, Version
+		) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+		#{item.id}
+		,
+		#{item.parentId}
+		, #{item.code}
+		, #{item.corpCode}
+		, #{item.name}
+		, #{item.status}
+		, #{item.type}
+		,
+		#{item.contactTel}
+		, #{item.provinceId}
+		, #{item.cityId}
+		, #{item.districtID}
+		, #{item.communityId}
+		, #{item.longitude}
+		, #{item.latitude}
+		, #{item.addrDetails}
+		, #{item.description}
+		, #{item.levels}
+		, #{item.path}
+		, #{item.idOrganizationType}
+		, #{item.systemId}
+		, #{item.createdOn}
+		,
+		#{item.createdBy}
+		, #{item.modifiedOn}
+		, #{item.modifiedBy}
+		, #{item.isDeleted}
+		, #{item.version}
+		)
+		</foreach>
+	</insert>
+
+	<update id="batchUpdate">
+		<foreach collection="list" item="item" index="index" separator=";">
+			update
+			Organazation
+			<set>
+				<if test="item.parentId != null and item.parentId != ''">ParentId =
+					#{item.parentId},
+				</if>
+				<if test="item.code != null and item.code != ''">Code =
+					#{item.code},
+				</if>
+				<if test="item.corpCode != null and item.corpCode != ''">CorpCode =
+					#{item.corpCode},
+				</if>
+				<if test="item.name != null and item.name != ''">Name =
+					#{item.name},
+				</if>
+				<if test="item.status != null">Status =
+					#{item.status},
+				</if>
+				<if test="item.type != null and item.type != ''">Type =
+					#{item.type},
+				</if>
+				<if test="item.contactTel != null and item.contactTel != ''">ContactTel =
+					#{item.contactTel},
+				</if>
+				<if test="item.provinceId != null and item.provinceId != ''">ProvinceId =
+					#{item.provinceId},
+				</if>
+				<if test="item.cityId != null and item.cityId != ''">CityId =
+					#{item.cityId},
+				</if>
+				<if test="item.districtID != null and item.districtID != ''">DistrictID =
+					#{item.districtID},
+				</if>
+				<if test="item.communityId != null and item.communityId != ''">CommunityId =
+					#{item.communityId},
+				</if>
+				<if test="item.longitude != null">Longitude =
+					#{item.longitude},
+				</if>
+				<if test="item.latitude != null">Latitude =
+					#{item.latitude},
+				</if>
+				<if test="item.addrDetails != null and item.addrDetails != ''">Addr_Details =
+					#{item.addrDetails},
+				</if>
+				<if test="item.description != null and item.description != ''">Description =
+					#{item.description},
+				</if>
+				<if test="item.levels != null">Levels =
+					#{item.levels},
+				</if>
+				<if test="item.path != null and item.path != ''">Path =
+					#{item.path},
+				</if>
+				<if test="item.idOrganizationType != null and item.idOrganizationType != ''">ID_Organization_Type =
+					#{item.idOrganizationType},
+				</if>
+				<if test="item.systemId != null and item.systemId != ''">SystemId =
+					#{item.systemId},
+				</if>
+				<if test="item.createdOn != null">CreatedOn =
+					#{item.createdOn},
+				</if>
+				<if test="item.createdBy != null and item.createdBy != ''">CreatedBy =
+					#{item.createdBy},
+				</if>
+<!-- 				<if test="item.modifiedOn != null">ModifiedOn = -->
+<!-- 					#{item.modifiedOn}, -->
+<!-- 				</if> -->
+<!-- 				<if test="item.modifiedBy != null and modifiedBy != ''">ModifiedBy = -->
+<!-- 					#{item.modifiedBy}, -->
+<!-- 				</if> -->
+				<if test="item.isDeleted != null">IsDeleted =
+					#{item.isDeleted},
+				</if>
+				<if test="item.version != null">Version =
+					#{item.version},
+				</if>
+			</set>
+			where
+			Id = #{item.id}
+		</foreach>
+	</update>
+	
+	<select id="exportOrganizationList" parameterType="map"
+		resultMap="OrganizationExport">
+		select 
+			t2.`Code` AS ParentCode
+			, t2.`Name` AS ParentName
+			, t1.`Code`
+			, t1.Type
+			, t1.CorpCode
+			, t1.`Name`
+			, t1.`Status`
+			, t1.ContactTel
+			, t1.ProvinceId
+			, t1.CityId
+			, t1.DistrictID
+			, t1.CommunityId
+			, t1.Addr_Details
+			, t1.Longitude
+			, t1.Latitude
+			, t1.Description
+			, t1.ID_Organization_Type
+			, s.sysName AS System
+		from Organazation t1
+		LEFT JOIN Organazation t2 ON t1.ParentId = t2.Id
+		LEFT JOIN SystemInfo s ON t1.SystemId = s.Id
+		<where>
+			t1.IsDeleted = '0'
+			<if test="orgType !=null and orgType !=''"> and t1.Type = #{orgType}</if>
+			<if test="orgCode !=null and orgCode !=''"> and t1.Code like CONCAT('%',#{orgCode},'%')</if>
+			<if test="orgName !=null and orgName !=''">and t1.Name like CONCAT('%',#{orgName},'%')</if>
+			<if test="parentId !=null and parentId !=''">and substring(t1.Path, length(#{parentPath}) +2) like
+				CONCAT(#{parentId}, '%')</if>
+				<if test="corpCode != null and corpCode != '' ">and t1.CorpCode = #{corpCode} </if>
+				<if test="sourceid != null and sourceid != '' ">and t1.SystemId = #{sourceid} </if>
+				<if test="beginDate != null and beginDate != ''"><![CDATA[ and t1.CreatedOn >= #{beginDate}]]></if>
+			<if test="endDate != null and endDate != ''"><![CDATA[ and t1.CreatedOn <= #{endDate}]]></if>
+		</where>
+	</select>
+	
+	<select id="queryCodeIdMap" resultType="com.mdm.importBean.OrganizationCodeId">
+		select
+		Id
+		, Code
+		, Name
+		FROM
+		Organazation
+	</select>
+	
+	<update id="updatePointAccount">
+		UPDATE Organazation
+		SET PointAccountId = #{pointAccountId}, IsExcepted = #{isExcepted}, ModifiedOn = now(), ModifiedBy = #{modifiedBy}
+		WHERE
+			Id = #{id}
+		AND IsDeleted = '0'
+		AND Type = #{orgType}
+	</update>
+	
+	<select id="queryPointAccount" resultMap="Organazation">
+		select
+		<include refid="select_sql" />
+		from
+		Organazation
+		where
+		Id = #{id}
+		and IsDeleted = '0'
+		and Type = #{orgType}
+	</select>
+	
+	<select id="getOrgIdByAccount" resultType="java.util.Map">
+		select
+		id AS orgId,
+		type AS orgType,
+		CASE
+		WHEN IsExcepted = 1 THEN
+			'true'
+		WHEN IsExcepted = 0 THEN
+			'false'
+		ELSE
+			'false'
+		END AS isExcepted,
+		'organazation' AS type
+		from
+		Organazation
+		where
+		PointAccountId = #{pointAccountId}
+		and IsDeleted = '0'
+		<if test="orgType !=null and orgType !=''">
+			and Type = #{orgType}
+		</if>
+	</select>
+	<update id="resetPointAccount">
+		UPDATE Organazation
+		SET PointAccountId = NULL,
+		 IsExcepted = NULL
+		WHERE
+			PointAccountId = #{pointAccountId}
+	</update>
+	
+</mapper>

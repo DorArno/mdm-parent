@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.dataextend.DataExtendRelevanceWriteMapper">
+
+   <sql id="select_sql">
+          Id
+		, TableName
+		, DataId
+		, DataExtendId
+		, ColValue
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+   </sql>
+   
+ 
+   
+	<resultMap id="DataExtendRelevance" type="com.mdm.extend.pojo.DataExtendRelevance">
+		<result property="id" column="Id" />
+		<result property="tableName" column="TableName" />
+		<result property="dataId" column="DataId" />
+		<result property="dataExtendId" column="DataExtendId" />
+		<result property="colValue" column="ColValue" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="isDeleted" column="IsDeleted" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into DataExtendRelevance (Id, TableName, DataId, DataExtendId, ColValue
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		) values<foreach collection="list" item="tfo" index="index" separator=","> (	 
+		#{tfo.id}
+		, #{tfo.tableName}
+		, #{tfo.dataId}
+		, #{tfo.dataExtendId}
+		, #{tfo.colValue}
+		, #{tfo.createdOn}
+		, #{tfo.createdBy}
+		, #{tfo.modifiedOn}
+		, #{tfo.modifiedBy}
+		, #{tfo.isDeleted}
+		)
+			  </foreach>
+	</insert>
+	
+	<delete id="deleteByDataId">
+		update
+		DataExtendRelevance
+		set
+		IsDeleted = '1'
+		where
+		DataId = #{id}
+	</delete>
+	
+	<select id="queryByDataid" parameterType="map"
+            resultType="com.mdm.extend.request.DataExtendRequest">
+            select b.ColName as colName,
+            b.ColType as colType ,
+            b.ColLength as colLength,
+            a.ColValue as colValue,
+            b.Description as description
+            from 
+              DataExtendRelevance  a left join DataExtend  b on a.DataExtendId = b.Id
+              <where>
+              a.IsDeleted = '0' 
+        	<if test="tablename != null  and dataid != ''  "> and  a.TableName  = #{tablename}</if>
+        	 <if test="dataid != null and dataid != ''">and  a.DataId = #{dataid}</if>
+        </where>
+   </select>
+ 
+</mapper>

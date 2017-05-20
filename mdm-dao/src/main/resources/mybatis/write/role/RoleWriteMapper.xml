@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.role.RoleWriteMapper">
+
+	<resultMap id="Role" type="com.mdm.pojo.Role">
+		<result property="id" column="Id" />
+		<result property="code" column="Code" />
+		<result property="name" column="Name" />
+		<result property="description" column="Description" />
+		<result property="level" column="Level" />
+		<result property="corpCode" column="CorpCode" />
+		<result property="systemId" column="SystemId" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="status" column="Status" />
+		<result property="isDeleted" column="IsDeleted" />
+		<result property="version" column="Version" />
+		<result property="type" column="Type" />
+		<association property="systemInfo" javaType="com.mdm.core.bean.pojo.SystemInfo"
+			resultMap="SystemInfo" />
+	</resultMap>
+
+	<resultMap id="SystemInfo" type="com.mdm.core.bean.pojo.SystemInfo">
+		<result property="sysName" column="sysName" />
+		<result property="sysCode" column="sysCode" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into Role (
+		Id
+		, Code
+		, Name
+		, Description
+		, Level
+		, CorpCode
+		, SystemId
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, 
+		Status
+		, Version
+		,Type
+		) values (
+		#{id}
+		, #{code}
+		, #{name}
+		, #{description}
+		,
+		#{level}
+		, #{corpCode}
+		, #{systemId}
+		, #{createdOn}
+		, #{createdBy}
+		,
+		#{modifiedOn}
+		, #{modifiedBy}
+		, #{status}
+		, #{version}
+		, #{type}
+		)
+	</insert>
+
+	<update id="update">
+		update
+		Role
+		set
+		Name = #{name},
+		Description =
+		#{description},
+		Level = #{level},
+		CorpCode = #{corpCode},
+		SystemId =
+		#{systemId},
+		ModifiedOn = #{modifiedOn},
+		ModifiedBy = #{modifiedBy},
+		Status =#{status},
+		Version = #{version},
+		IsDeleted = #{isDeleted},
+		Type = #{type}
+		where
+		Id = #{id}
+	</update>
+
+
+	<update id="updateStatus">
+		update
+		Role
+		set
+		ModifiedOn = #{modifiedOn},
+		ModifiedBy =
+		#{modifiedBy},
+		Status =#{status},
+		Version = #{version}
+		where
+		Id = #{id}
+	</update>
+
+	<select id="getById" resultMap="Role">
+		select
+		a.Id
+		, a.Code
+		, a.Name
+		, a.Description
+		, a.Level
+		, a.Type
+		, a.CorpCode
+		, a.SystemId
+		, a.CreatedOn
+		, a.CreatedBy
+		, a.ModifiedOn
+		, b.sysCode,
+		a.ModifiedBy
+		, a.Status
+		, a.IsDeleted
+		, a.Version
+		from
+		Role a left join SystemInfo b on a.SystemId = b.Id
+		where
+		a.Id = #{id} and a.IsDeleted = '0'
+	</select>
+
+	<update id="deleteById">
+		update
+		Role
+		set
+		IsDeleted = #{isDeleted}
+		, ModifiedBy =
+		#{modifiedBy}
+		, ModifiedOn = #{modifiedOn}
+		, Version = #{version}
+		where
+		Id = #{id}
+	</update>
+	
+	<update id="deleteUserRoleByRoleId">
+		update
+			UserOrganizationRole
+		set
+			IsDeleted = #{isDeleted}
+		, ModifiedBy = #{modifiedBy}
+		, ModifiedOn = #{modifiedOn}
+		where
+			RoleId = #{id}
+	</update>
+
+	<select id="queryPageList" parameterType="map" resultMap="Role">
+		select
+		r.Id
+		, r.Code
+		, r.Name
+		, r.Description
+		, r.Level
+		, r.CorpCode
+		, r.Type,
+		r.SystemId
+		, r.CreatedOn
+		, r.CreatedBy
+		, r.ModifiedOn
+		, r.ModifiedBy
+		,
+		r.Status
+		, r.IsDeleted
+		, r.Version
+		, s.sysName
+		, s.sysCode
+		from
+		Role r left join
+		SystemInfo s on r.SystemId = s.Id
+		<where>
+			<if test="isDeleted != null">and r.IsDeleted = #{isDeleted}</if>
+			<if test="systemId != null and systemId != ''">and r.systemId = #{systemId}</if>
+			<if test="name != null and name != ''">and r.Name LIKE CONCAT('%',#{name},'%')</if>
+			<if test="description != null and description != ''">and r.Description
+				LIKE CONCAT('%',#{description},'%') </if>
+			<if test="status != null and status != ''">and r.Status = #{status}</if>
+			<if test="code != null and code != ''">and r.Code LIKE CONCAT('%',#{code},'%')</if>
+			<if test="userPage != null and userPage != '' and corpCode != null and corpCode != '' ">
+				and r.CorpCode = #{corpCode}
+			</if>
+			<if test="corpCode != null and corpCode != '' and (userPage ==null or userPage == '')">
+				and r.CorpCode LIKE CONCAT('%',#{corpCode},'%')
+			</if>
+			<if test="startDate != null">and r.CreatedOn >= #{startDate}</if>
+			<if test="endDate != null">and #{endDate} > r.CreatedOn</if>
+			<if test="noCss != null and noCss != ''">and r.systemId != #{noCss}</if>
+		</where>
+		order by r.CreatedOn desc
+	</select>
+
+	<select id="queryRoleByUserId" resultMap="Role">
+		select
+		r.Id
+		, r.Code
+		,
+		r.Name
+		from
+		UserRole ur
+		, Role r
+		where
+		ur.UserId = ${userId}
+		and ur.RoleId =
+		r.Id
+		and ur.IsDeleted = '0'
+		and r.IsDeleted = '0'
+	</select>
+	
+	<select id="getMinLevelRoleByUserId" parameterType="map" resultMap="Role">
+        select
+		min(r.Level) as Level
+		from
+        	UserOrganizationRole ur,Role r
+        where
+        	ur.UserId = #{userId}
+        and ur.IsDeleted = #{isDeleted}
+        and ur.RoleId = r.Id
+        and r.Status = #{status}
+    </select>
+    
+    <select id="queryRoleNameExist" parameterType="map" resultType="Integer">
+    	select count(1) from Role a left join SystemInfo b on a.SystemId = b.Id where a.Name = #{name} and b.Id= #{id}
+    </select>
+    
+    <select id="batchQueryRolesByIds" resultMap="Role">
+		select
+		r.Id
+		, r.Code
+		, r.Name
+		, r.Description
+		, r.Level
+		, r.CorpCode
+		, r.Type
+		, r.SystemId
+		, r.CreatedOn
+		, r.CreatedBy
+		, r.ModifiedOn
+		, r.ModifiedBy
+		, r.Status
+		, r.IsDeleted
+		, r.Version
+		, s.sysName
+		, s.sysCode
+		from
+		Role r left join
+		SystemInfo s on r.SystemId = s.Id
+		
+		where		
+		r.CorpCode in (
+		<foreach collection="list" item="corpCode" index="index" separator=",">
+			#{corpCode}
+		</foreach>
+		)
+		<if test="isDeleted != null">and r.IsDeleted = #{isDeleted}</if>
+		<if test="systemId != null and systemId != ''">and r.systemId = #{systemId}</if>
+		order by r.CreatedOn desc
+	</select>
+</mapper>

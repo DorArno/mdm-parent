@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.mergeuser.MergeUserMapper">
+
+	<resultMap id="UserBasicsInfoMerge" type="com.mdm.pojo.MergeUserInfo">
+		<result property="id" column="Id"/>
+		<result property="account" column="Account"/>
+		<result property="password" column="Password"/>
+		<result property="customerCode" column="CustomerCode"/>
+		<result property="username" column="Username"/>
+		<result property="status" column="Status"/>
+		<result property="type" column="Type"/>
+		<result property="cellPhone" column="CellPhone"/>
+		<result property="email" column="Email"/>
+		<result property="corpCode" column="CorpCode"/>
+		<result property="sex" column="Sex"/>
+		<result property="phoneNumber" column="PhoneNumber"/>
+		<result property="weChatID" column="WeChatID"/>
+		<result property="systemId" column="SystemId"/>
+		<result property="createdOn" column="CreatedOn"/>
+		<result property="createdBy" column="CreatedBy"/>
+		<result property="modifiedOn" column="ModifiedOn"/>
+		<result property="modifiedBy" column="ModifiedBy"/>
+		<result property="isDeleted" column="IsDeleted"/>
+		<result property="nickName" column="NickName"/>
+		<result property="birthDay" column="BirthDay"/>
+		<result property="registerDate" column="RegisterDate"/>
+		<result property="emailConfirmed" column="EmailConfirmed"/>
+		<result property="phoneNumberConfirmed" column="PhoneNumberConfirmed"/>
+		<result property="memberFrom" column="MemberFrom"/>
+		<result property="description" column="Description"/>
+		<result property="areaID" column="AreaID"/>
+		<result property="homeAddress" column="HomeAddress"/>
+		<result property="userNo" column="UserNo"/>
+		<result property="signature" column="Signature"/>
+		<result property="lastLoginTime" column="LastLoginTime"/>
+		<result property="loginIp" column="LoginIp"/>
+		<result property="isInternal" column="IsInternal"/>
+		<result property="salt" column="Salt"/>
+		<result property="enteryTime" column="EnteryTime"/>
+		<result property="systemId" column="SystemId"/>
+	</resultMap>
+	
+	
+	<insert id="mergeUserRelation" parameterType="com.mdm.pojo.UserMergeRela">
+		insert into UserMergeRela(Id,UserId,extraUserId,extraSystemId,IsDeleted)
+				values(#{id},#{userId},#{extraUserId},#{extraSystemId},#{isDeleted})		
+	</insert>
+	
+	<insert id="mergeUser">
+        insert into UserBasicsInfo (
+                                            Id
+                                                                ,  Account
+                                                ,  Password
+                                                ,  CustomerCode
+                                                ,  Username
+                                                ,  Status
+                                                ,  Type
+                                                ,  CellPhone
+                                                ,  Email
+                                                ,  SystemId
+                                                ,  CorpCode
+                                                ,  Sex
+                                                ,  PhoneNumber
+                                                ,  WeChatID
+                                                ,  CreatedOn
+                                                ,  CreatedBy
+                                                ,  ModifiedOn
+                                                ,  ModifiedBy
+                                                ,  IsDeleted
+                                                ,  Version
+                            ) values (
+                                            #{id}
+                                                                                    , #{account}
+                                                                                    , #{password}
+                                                                                    , #{customerCode}
+                                                                                    , #{username}
+                                                                                    , #{status}
+                                                                                    , #{type}
+                                                                                    , #{cellPhone}
+                                                                                    , #{email}
+                                                                                    , #{systemId}
+                                                                                    , #{corpCode}
+                                                                                    , #{sex}
+                                                                                    , #{phoneNumber}
+                                                                                    , #{weChatID}
+                                                                                    , #{createdOn}
+                                                                                    , #{createdBy}
+                                                                                    , #{modifiedOn}
+                                                                                    , #{modifiedBy}
+                                                                                    , #{isDeleted}
+                                                                                    , #{version}
+                                            )
+	</insert>
+    
+    
+    
+	<insert id="mergeUserDetail">
+        insert into UserDetailInfo (
+                                            Id
+                                                                ,  UserId
+                                                ,  NickName
+                                                ,  BirthDay
+                                                ,  RegisterDate
+                                                ,  EmailConfirmed
+                                                ,  PhoneNumberConfirmed
+                                                ,  MemberFrom
+                                                ,  Description
+                                                ,  AreaID
+                                                ,  HomeAddress
+                                                ,  UserNo
+                                                ,  Signature
+                                                ,  LastLoginTime
+                                                ,  LoginIp
+                                                ,  IsInternal
+                                                ,  Salt
+                                                ,  EnteryTime
+                                                ,  CreatedOn
+                                                ,  CreatedBy
+                                                ,  ModifiedOn
+                                                ,  ModifiedBy
+                                                ,  IsDeleted
+                                                ,  Version
+                            ) values (
+                                            #{id}
+                                                                                    , #{userId}
+                                                                                    , #{nickName}
+                                                                                    , #{birthDay}
+                                                                                    , #{registerDate}
+                                                                                    , #{emailConfirmed}
+                                                                                    , #{phoneNumberConfirmed}
+                                                                                    , #{memberFrom}
+                                                                                    , #{description}
+                                                                                    , #{areaID}
+                                                                                    , #{homeAddress}
+                                                                                    , #{userNo}
+                                                                                    , #{signature}
+                                                                                    , #{lastLoginTime}
+                                                                                    , #{loginIp}
+                                                                                    , #{isInternal}
+                                                                                    , #{salt}
+                                                                                    , #{enteryTime}
+                                                                                    , #{createdOn}
+                                                                                    , #{createdBy}
+                                                                                    , #{modifiedOn}
+                                                                                    , #{modifiedBy}
+                                                                                    , #{isDeleted}
+                                                                                    , #{version}
+                                            )
+	</insert>
+    
+	
+	
+	<update id="updateMergeUserStatus">
+        update
+        UserBasicsInfoMerge
+			set IsDeleted = '1'
+                    where  Id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+  			#{item}
+		</foreach>
+	</update>
+	
+	<update id="updateMergeUserDetailStatus">
+        update
+        UserDetailInfoMerge
+			set IsDeleted = '1'
+			where Id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+  			#{item}
+		</foreach>
+	</update>
+	
+	
+	<select id="querySystemId" parameterType="java.lang.String" resultType="java.lang.String">
+		select SystemId from UserBasicsInfoMerge where id = #{id}
+	</select>
+
+	<select id="queryPageList" parameterType="map"
+		resultMap="UserBasicsInfoMerge">
+        select
+                                           		 A.Id
+                                                , A.Account
+                                                , A.Password
+                                                , A.CustomerCode
+                                                , A.Username
+                                                , A.Status
+                                                , A.Type
+                                                , A.CellPhone
+                                                , A.Email
+                                                , A.CorpCode
+                                                , A.Sex
+                                                , A.PhoneNumber
+                                                , A.WeChatID
+                                                , A.SystemId
+                                                , A.CreatedOn
+                                                , A.CreatedBy
+                                                , A.ModifiedOn
+                                                , A.ModifiedBy
+                                                , A.IsDeleted
+                                                , B.NickName
+                                                , B.BirthDay
+                                                , B.RegisterDate
+                                                , B.EmailConfirmed
+                                                , B.PhoneNumberConfirmed
+                                                , B.MemberFrom
+                                                , B.Description
+                                                , B.AreaID
+                                                , B.HomeAddress
+                                                , B.UserNo
+                                                , B.Signature
+                                                , B.LastLoginTime
+                                                , B.LoginIp
+                                                , B.IsInternal
+                                                , B.Salt
+                                                , B.EnteryTime
+                            from
+        UserBasicsInfoMerge A LEFT JOIN UserDetailInfoMerge B ON A.Id = B.Id
+        where A.IsDeleted = '0'
+		<if test="account!=null and account!='' ">   
+       		and A.Account like CONCAT('%',#{account},'%') 
+		</if>
+		<if test="sex!=null and sex!='' ">   
+       		and A.Sex like CONCAT('%',#{sex},'%') 
+		</if>
+		<if test="syscode!=null and syscode!='' ">   
+       		and A.CustomerCode like CONCAT('%',#{syscode},'%') 
+		</if>
+		<if test="sysname!=null and sysname!='' ">   
+       		and A.Username like CONCAT('%',#{sysname},'%') 
+		</if>
+		<if test="status!=null and status!='' ">   
+       		and A.Status like CONCAT('%',#{status},'%') 
+		</if>
+		<if test="type!=null and type!='' ">   
+       		and A.Type like CONCAT('%',#{type},'%') 
+		</if>
+		<if test="phone!=null and phone!='' ">   
+       		and A.CellPhone like CONCAT('%',#{phone},'%') 
+		</if>             
+	</select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.userLoginRecord.UserLoginRecordMapper">
+
+	<select id="queryUserLoginRecordList" resultType="com.mdm.response.UserLoginResponse">
+		select DISTINCT id,account,channel,loginIp,`status`,DATE_FORMAT(loginTime,"%Y-%m-%d %T") loginTime,userId,type,createdOn,createdBy,modifiedOn,modifiedBy,isDeleted,exceptionCode,exceptionDetails
+		FROM
+		UserLoginRecord
+		<where>
+			<if test="account != null and account != ''">
+				and account like CONCAT('%','${account}','%' )
+			</if>
+			<if test="startDate != null and startDate != '' and endDate != null and endDate !='' ">
+				and (loginTime between '${startDate}' and '${endDate}')
+			</if>
+			<if test="startDate != null and startDate != '' and endDate == null ">
+				<![CDATA[
+					and loginTime >= '${startDate}'
+				]]>
+			</if>
+			<if test="endDate != null and endDate != '' and startDate == null ">
+				<![CDATA[
+					and loginTime <= '${endDate}'
+				]]>
+			</if>
+			and IsDeleted=0
+		</where>
+	</select>
+
+</mapper>

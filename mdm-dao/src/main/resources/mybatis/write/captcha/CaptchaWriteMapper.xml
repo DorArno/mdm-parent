@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.captcha.CaptchaWriteMapper">
+
+ <sql id="select_sql">
+         Id
+		, Code
+		, CellPhone
+		, CreateTime
+		, FailureTime
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+   </sql>
+	<resultMap id="VerifyCode" type="com.mdm.pojo.VerifyCode">
+		<result property="id" column="Id" />
+		<result property="code" column="Code" />
+		<result property="cellPhone" column="CellPhone" />
+		<result property="createTime" column="CreateTime" />
+		<result property="failureTime" column="FailureTime" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="isDeleted" column="IsDeleted" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into VerifyCode (  <include refid="select_sql" />
+		) values  (	 
+		  #{id}
+		, #{code}
+		, #{cellPhone}
+		, #{createTime}
+		, #{failureTime}
+		, #{createdOn}
+		, #{createdBy}
+		, #{modifiedOn}
+		, #{modifiedBy}
+		, #{isDeleted}
+		)
+	</insert>
+	
+	  <delete  id="deleteByCellphone"  >
+	    update
+		VerifyCode
+		set
+		IsDeleted = 1, ModifiedOn = now()
+		where
+		CellPhone = #{cellphone} and IsDeleted=0
+	</delete>
+	
+	<select id="queryById"    resultMap="VerifyCode">
+		select
+		 <include refid="select_sql" />
+		from
+		VerifyCode 
+		<where>
+          Id = #{id} 
+		</where>
+	</select>
+</mapper>

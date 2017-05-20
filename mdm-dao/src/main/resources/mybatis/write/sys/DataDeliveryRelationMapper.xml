@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.sys.DataDeliveryRelationMapper">
+
+	<resultMap id="DataDeliveryRelation" type="com.mdm.pojo.DataDeliveryRelation">
+		<result property="id" column="Id" />
+		<result property="dataType" column="DataType" />
+		<result property="systemId" column="SystemId" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="isDeleted" column="IsDeleted" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into DataDeliveryRelation (
+		Id
+		, DataType
+		, SystemId
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		) values (
+		#{id}
+		, #{dataType}
+		, #{systemId}
+		, #{createdOn}
+		, #{createdBy}
+		, #{modifiedOn}
+		, #{modifiedBy}
+		, #{isDeleted}
+		)
+	</insert>
+
+	<update id="update">
+		update
+		DataDeliveryRelation
+		<set>
+			<if test="dataType != null">DataType =
+				#{dataType},
+			</if>
+			<if test="systemId != null and systemId != ''">SystemId =
+				#{systemId},
+			</if>
+			<if test="createdOn != null">CreatedOn =
+				#{createdOn},
+			</if>
+			<if test="createdBy != null and createdBy != ''">CreatedBy =
+				#{createdBy},
+			</if>
+			<if test="modifiedOn != null">ModifiedOn =
+				#{modifiedOn},
+			</if>
+			<if test="modifiedBy != null and modifiedBy != ''">ModifiedBy =
+				#{modifiedBy},
+			</if>
+			<if test="isDeleted != null">IsDeleted =
+				#{isDeleted},
+			</if>
+		</set>
+		where
+		Id = #{id}
+	</update>
+
+	<select id="getById" resultMap="DataDeliveryRelation">
+		select
+		Id
+		, DataType
+		, SystemId
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		from
+		DataDeliveryRelation
+		where
+		Id = #{id}
+	</select>
+
+	<delete id="deleteById">
+		update
+		DataDeliveryRelation
+		set
+		IsDeleted = '1'
+		where
+		Id = #{id}
+	</delete>
+
+	<select id="queryPageList" parameterType="map" resultMap="DataDeliveryRelation">
+		select
+		Id
+		, DataType
+		, SystemId
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		from
+		DataDeliveryRelation
+		<where>
+		</where>
+	</select>
+</mapper>

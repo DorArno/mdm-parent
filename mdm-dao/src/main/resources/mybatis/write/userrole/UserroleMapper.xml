@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.userrole.UserroleMapper">
+
+	<resultMap id="Userrole" type="com.mdm.pojo.UserOrganizationRole">
+		<result property="id" column="Id" />
+		<result property="roleId" column="RoleId" />
+		<result property="userId" column="UserId" />
+		<result property="organizationId" column="OrganizationId" />
+		<result property="type" column="Type" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="isDeleted" column="IsDeleted" />
+		<result property="departmentName" column="name"/>
+		<association property="user" resultMap="User" />
+	</resultMap>
+
+	<resultMap id="User" type="com.mdm.pojo.UserBasicsInfo">
+		<result property="username" column="Username" />
+		<result property="account" column="Account" />
+		<result property="sex" column="Sex" />
+		<result property="cellPhone" column="CellPhone" />
+		<result property="email" column="Email" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into UserRole (
+		Id
+		, RoleId
+		, UserId
+		, OrganizationId
+		, Type
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		) values (
+		#{id}
+		, #{roleId}
+		, #{userId}
+		, #{organizationId}
+		, #{type}
+		, #{createdOn}
+		, #{createdBy}
+		, #{modifiedOn}
+		, #{modifiedBy}
+		, #{isDeleted}
+		)
+	</insert>
+
+	<update id="update">
+		update
+		UserRole
+		<set>
+			<if test="roleid != null and roleid != ''">RoleId =
+				#{roleid},
+			</if>
+			<if test="userid != null and userid != ''">UserId =
+				#{userid},
+			</if>
+			<if test="organizationid != null and organizationid != ''">OrganizationId =
+				#{organizationid},
+			</if>
+			<if test="type != null">Type =
+				#{type},
+			</if>
+			<if test="createdon != null">CreatedOn =
+				#{createdon},
+			</if>
+			<if test="createdby != null and createdby != ''">CreatedBy =
+				#{createdby},
+			</if>
+			<if test="modifiedon != null">ModifiedOn =
+				#{modifiedon},
+			</if>
+			<if test="modifiedby != null and modifiedby != ''">ModifiedBy =
+				#{modifiedby},
+			</if>
+			<if test="isdeleted != null">IsDeleted =
+				#{isdeleted},
+			</if>
+		</set>
+		where
+		Id = #{id}
+	</update>
+
+	<select id="getById" resultMap="Userrole">
+		select
+		Id
+		, RoleId
+		, UserId
+		, OrganizationId
+		, Type
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		from
+		UserRole
+		where
+		Id = #{id}
+	</select>
+
+	<delete id="deleteById">
+		update
+		UserRole
+		set
+		IsDeleted = '1'
+		where
+		Id = #{id}
+	</delete>
+
+	<update id="deleteByRoleId">
+		update
+		UserRole
+		set
+		IsDeleted = #{isDeleted}
+		, ModifiedBy = #{modifiedBy}
+		, ModifiedOn = #{modifiedOn}
+		where
+		RoleId = #{roleId}
+	</update>
+
+	<select id="queryUserRoleCountByLevel" parameterType="map"
+		resultType="long">
+		select
+		count(1)
+		from
+		UserOrganizationRole ur,Role r
+		where
+		ur.UserId = #{userId}
+		and ur.IsDeleted = #{isDeleted}
+		and ur.RoleId = r.Id
+		and r.Level = #{level}
+	</select>
+
+	<select id="queryPageList" parameterType="map" resultMap="Userrole">
+		select
+		Id
+		, RoleId
+		, UserId
+		, OrganizationId
+		, Type
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		from
+		UserRole
+		<where>
+		</where>
+	</select>
+	
+	
+	
+	<select id="queryUserIdByRoleId" parameterType="map" resultMap="Userrole">
+		select ur.UserId from UserOrganizationRole ur where ur.RoleId = #{roleId}
+	</select>
+	
+
+    <select id="queryUserRoleByRoleId" parameterType="map" resultMap="Userrole">
+        select
+        	ur.Id
+		,	ur.OrganizationId
+	
+		,	ub.Username
+		,	ub.Account
+		,	ub.Sex
+		,	ub.CellPhone
+		, 	ub.Email
+		,   b.name
+		from
+        	UserOrganizationRole ur join UserBasicsInfo ub on ur.UserId = ub.Id
+        	join Organazation b on ur.OrganizationId = b.Id
+        <where>
+        	<if test="roleId != null">and ur.RoleId = #{roleId}</if>
+        	<if test="isDeleted != null">and ur.IsDeleted = #{isDeleted}</if>
+        	<if test="username != null and username != ''">and ub.Username LIKE CONCAT('%',#{username},'%')</if>
+        	<if test="cellPhone != null and cellPhone != ''">and ub.CellPhone LIKE CONCAT('%',#{cellPhone},'%')</if>
+        	<if test="sex != null and sex !=''">and ub.Sex = #{sex}</if>
+        	<if test="userid != null and userid!=''">and ur.UserId in (${userid})</if>
+        </where>
+    </select>
+
+</mapper>

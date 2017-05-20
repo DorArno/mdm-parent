@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>[%X{operatorId}] [%X{logId}] %date %-5level [%c{0}.%M:%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/data/logs/mdm/mdm-log.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				/data/logs/mdm/mdm-log.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+		    <maxHistory>10</maxHistory>
+		    <cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+		<layout>
+			<pattern>[%X{operatorId}] [%X{logId}] %-20(%d{HH:mm:ss.SSS} [%t]) %-5level %logger{32}- {"time":"%date","message": "%replace(%replace(%msg){'\"','\\\"' }){'\\\\','\\'} " } %n</pattern>
+		</layout>
+	</appender>
+    
+    <springProfile name="devt">
+       <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+	        <destination>10.200.8.11:9201</destination>
+	      	<keepAliveDuration>5 minutes</keepAliveDuration>
+	        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+    	</appender>
+    </springProfile>
+    
+    <springProfile name="dev">
+       <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+	        <destination>10.11.21.5:9201</destination>
+	      	<keepAliveDuration>5 minutes</keepAliveDuration>
+	        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+    	</appender>
+    </springProfile>
+
+	<springProfile name="ccpgdev">
+		<appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+			<destination>192.168.2.171:9201</destination>
+			<keepAliveDuration>5 minutes</keepAliveDuration>
+			<encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+		</appender>
+	</springProfile>
+    
+    <springProfile name="test">
+       <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+	        <destination>10.11.21.12:9201</destination>
+	      	<keepAliveDuration>5 minutes</keepAliveDuration>
+	        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+    	</appender>
+    </springProfile>
+
+	<springProfile name="uat">
+		<appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+			<destination>10.11.21.19:9201</destination>
+			<keepAliveDuration>5 minutes</keepAliveDuration>
+			<encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+		</appender>
+	</springProfile>
+    
+    <springProfile name="prod">
+       <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+	        <destination>10.11.11.71:9201</destination>
+	      	<keepAliveDuration>5 minutes</keepAliveDuration>
+	        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+    	</appender>
+    </springProfile>
+    
+  <logger name="com.mdm.dao" level="debug"></logger>
+	<root level="INFO">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	    <appender-ref ref="stash" />
+	</root>
+</configuration>

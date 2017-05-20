@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.task.CommonTaskWriteMapper">
+
+	<resultMap id="CommonTask" type="com.mdm.pojo.CommonTask">
+		<result property="id" column="Id" />
+		<result property="dataId" column="DataId" />
+		<result property="dataType" column="DataType" />
+		<result property="taskType" column="TaskType" />
+		<result property="executeTime" column="ExecuteTime" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="status" column="Status" />
+		<result property="isDeleted" column="IsDeleted" /> 
+	</resultMap>
+
+	<insert id="insert">
+		insert into CommonTask (
+		Id
+		, DataId
+		, DataType
+		, TaskType
+		, ExecuteTime
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, Status
+		) values (
+		#{id}
+		, #{dataId}
+		, #{dataType}
+		, #{taskType}
+		, #{executeTime}
+		, #{createdOn}
+		, #{createdBy}
+		, #{modifiedOn}
+		, #{modifiedBy}
+		, #{status}
+		)
+	</insert>
+	
+	<insert id="batchInsert">
+		insert into CommonTask (
+		Id
+		, DataId
+		, DataType
+		, TaskType
+		, ExecuteTime
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, Status
+		) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+		#{item.id}
+		, #{item.dataId}
+		, #{item.dataType}
+		, #{item.taskType}
+		, #{item.executeTime}
+		, #{item.createdOn}
+		, #{item.createdBy}
+		, #{item.modifiedOn}
+		, #{item.modifiedBy}
+		, #{item.status}
+		)
+		</foreach>
+	</insert>
+
+	<update id="update">
+		update
+		CommonTask
+		set
+		DataId = #{dataId},
+		DataType = #{dataType},
+		TaskType = #{taskType},
+		ExecuteTime = #{executeTime},
+		ModifiedOn = #{modifiedOn},
+		ModifiedBy = #{modifiedBy},
+		Status =#{status}
+		where
+		Id = #{id}
+	</update>
+
+
+	<update id="updateStatus">
+		update
+		CommonTask
+		set
+		ExecuteTime = ExecuteTime + 1,
+		ModifiedOn = #{modifiedOn},
+		Status =#{status}
+		where
+		Id = #{id}
+	</update>
+
+	<select id="getById" resultMap="CommonTask">
+		select
+		Id
+		, DataId
+		, DataType
+		, TaskType
+		, ExecuteTime
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, Status
+		from
+		CommonTask
+		where
+		Id = #{id}
+	</select>
+
+	<update id="deleteById">
+		update
+		CommonTask
+		set
+		IsDeleted = #{isDeleted}
+		, ModifiedBy =
+		#{modifiedBy}
+		, ModifiedOn = #{modifiedOn}
+		where
+		Id = #{id}
+	</update>
+	
+	<update id="deleteCommonTaskById">
+		update
+			CommonTask
+		set
+			IsDeleted = #{isDeleted}
+		, ModifiedBy = #{modifiedBy}
+		, ModifiedOn = #{modifiedOn}
+		where
+			Id = #{id}
+	</update>
+
+	<select id="queryPageList" parameterType="map" resultMap="CommonTask">
+		select
+		Id
+		, DataId
+		, DataType
+		, TaskType
+		, ExecuteTime
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, Status
+		from
+		CommonTask r  
+		<where>
+			<if test="isDeleted != null">and r.IsDeleted = #{isDeleted}</if>
+			<if test="status != null and status != ''">and r.Status = #{status}</if>
+			<if test="startDate != null">and r.CreatedOn >= #{startDate}</if>
+		</where>
+		order by r.CreatedOn desc
+	</select>
+</mapper>

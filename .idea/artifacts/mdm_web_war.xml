@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mdm-web:war">
+    <output-path>$PROJECT_DIR$/mdm-web/target</output-path>
+    <root id="archive" name="mdm.war">
+      <element id="artifact" artifact-name="mdm-web:war exploded" />
+    </root>
+  </artifact>
+</component>

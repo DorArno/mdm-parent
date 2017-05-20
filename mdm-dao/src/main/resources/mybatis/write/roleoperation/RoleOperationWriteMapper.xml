@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.roleoperation.RoleOperationWriteMapper">
+
+    <resultMap id="RoleOperation" type="com.mdm.pojo.RoleOperation">
+                    <result property="id" column="Id"/>
+                    <result property="operationId" column="OperationId"/>
+                    <result property="roleId" column="RoleId"/>
+                    <result property="actionId" column="ActionId"/>
+                    <result property="isDeleted" column="IsDeleted"/>
+                    <result property="createdBy" column="CreatedBy"/>
+                    <result property="createdOn" column="CreatedOn"/>
+                    <result property="modifiedBy" column="ModifiedBy"/>
+                    <result property="modifiedOn" column="ModifiedOn"/>
+            </resultMap>
+
+    <insert id="insert" parameterType="list">
+        insert into RoleOperation (
+               Id
+            ,  OperationId
+            ,  RoleId
+            ,  ActionId
+            ,  CreatedBy
+            ,  CreatedOn
+            ,  ModifiedBy
+            ,  ModifiedOn
+       	) values
+       	<foreach collection="list" item="tfo" index="index" separator=","> (
+               #{tfo.id}
+            ,  #{tfo.operationId}
+            ,  #{tfo.roleId}
+            ,  #{tfo.actionId}
+            ,  #{tfo.createdBy}
+            ,  #{tfo.createdOn}
+            ,  #{tfo.modifiedBy}
+            ,  #{tfo.modifiedOn}
+        )
+        </foreach>
+    </insert>
+
+    <update id="update">
+        update
+        RoleOperation
+        <set>
+                                                                        	                    <if test="operationId != null and operationId != ''">OperationId =
+                        #{operationId},
+                    </if>
+                                                                                	                    <if test="roleId != null and roleId != ''">RoleId =
+                        #{roleId},
+                    </if>
+                                                                                	                    <if test="actionId != null and actionId != ''">ActionId =
+                        #{actionId},
+                    </if>
+                                                                                	                    <if test="isDeleted != null">IsDeleted =
+                        #{isDeleted},
+                    </if>
+                                                                                	                    <if test="createdBy != null and createdBy != ''">CreatedBy =
+                        #{createdBy},
+                    </if>
+                                                                                	                    <if test="createdOn != null">CreatedOn =
+                        #{createdOn},
+                    </if>
+                                                                                	                    <if test="modifiedBy != null and modifiedBy != ''">ModifiedBy =
+                        #{modifiedBy},
+                    </if>
+                                                                                	                    <if test="modifiedOn != null">ModifiedOn =
+                        #{modifiedOn},
+                    </if>
+                                                        </set>
+                    where
+                                                                                    Id = #{id}
+                                                                                                                                                                                                                                                                                                                    </update>
+
+    <select id="getByRoleId" resultMap="RoleOperation">
+        select
+                                                OperationId
+                            from
+        RoleOperation
+                    where
+			RoleId = #{roleId}
+		and IsDeleted = #{isDeleted}
+	</select>
+
+    <update id="deleteByRoleId">
+        update
+        	RoleOperation
+        set
+        	IsDeleted = #{isDeleted}
+       	,   ModifiedBy = #{modifiedBy}
+       	,   ModifiedOn = #{modifiedOn}  
+		where
+         	RoleId = #{roleId}
+	</update>
+	
+	<update id="deleteByActionId">
+        update
+        	RoleOperation
+        set
+        	IsDeleted = #{isDeleted}
+       	,   ModifiedBy = #{modifiedBy}
+       	,   ModifiedOn = #{modifiedOn}  
+		where
+         	ActionId = #{actionId}
+	</update>
+	
+	<update id="deleteByOperationId">
+        update
+        	RoleOperation
+        set
+        	IsDeleted = #{isDeleted}
+       	,   ModifiedBy = #{modifiedBy}
+       	,   ModifiedOn = #{modifiedOn}  
+		where
+         	OperationId = #{operationId}
+	</update>
+
+    <select id="queryPageList" parameterType="map"
+            resultMap="RoleOperation">
+        select
+                                            Id
+                                                , OperationId
+                                                , RoleId
+                                                , ActionId
+                                                , IsDeleted
+                                                , CreatedBy
+                                                , CreatedOn
+                                                , ModifiedBy
+                                                , ModifiedOn
+                            from
+        RoleOperation
+        <where>
+        </where>
+    </select>
+</mapper>

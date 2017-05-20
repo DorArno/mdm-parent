@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.dataextend.DataExtendWriteMapper">
+
+   <sql id="select_sql">
+   Id
+		, TableName
+		, ColName
+		, ColType
+		, ColLength
+		, Description
+		, CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+   </sql>
+	<resultMap id="DataExtend" type="com.mdm.extend.pojo.DataExtend">
+		<result property="id" column="Id" />
+		<result property="tableName" column="TableName" />
+		<result property="colName" column="ColName" />
+		<result property="colType" column="ColType" />
+		<result property="colLength" column="ColLength" />
+		<result property="description" column="Description" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="isDeleted" column="IsDeleted" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into DataExtend (Id, TableName, ColName, ColType, ColLength, Description, 
+		  CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		) values 
+ (	 
+		  #{id}
+		, #{tableName}
+		, #{colName}
+		, #{colType}
+		, #{colLength}
+		, #{description}
+		, #{createdOn}
+		, #{createdBy}
+		, #{modifiedOn}
+		, #{modifiedBy}
+		, #{isDeleted}
+		)
+
+	</insert>
+	
+	<insert id="insertBatch">
+		insert into DataExtend (Id, TableName, ColName, ColType, ColLength, Description, 
+		  CreatedOn
+		, CreatedBy
+		, ModifiedOn
+		, ModifiedBy
+		, IsDeleted
+		) values 
+ 		<foreach collection="list" item="tfo" index="index" separator=",">(
+		  #{tfo.id}
+		, #{tfo.tableName}
+		, #{tfo.colName}
+		, #{tfo.colType}
+		, #{tfo.colLength}
+		, #{tfo.description}
+		, #{tfo.createdOn}
+		, #{tfo.createdBy}
+		, #{tfo.modifiedOn}
+		, #{tfo.modifiedBy}
+		, #{tfo.isDeleted}
+		)
+		</foreach>
+	</insert>
+		
+	
+  <select id="queryByTableNameAndColName" parameterType="map" resultMap="DataExtend">
+		select
+		 <include refid="select_sql" />
+		from
+		DataExtend
+		<where>
+          <if test="tableName !=null and tableName !=''"> and TableName = #{tableName}</if>
+          <if test="colName !=null and colName !=''"> and ColName = #{colName} </if>
+		</where>
+	</select>
+	
+	<delete id="deletById">
+		update
+			DataExtend
+		set
+			IsDeleted = #{isDeleted}
+		where
+			Id in (select DataExtendId from DataExtendRelevance where DataId = #{dataId} and IsDeleted = #{isNotDeleted})
+	</delete>
+
+</mapper>

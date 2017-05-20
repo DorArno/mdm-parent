@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.user.UserWriteMapper">
+
+	<sql id="select_basics_sql">
+		u.Pk as pk,
+		u.Id as id,
+		u.Account as account,
+		u.CustomerCode
+		as customerCode,
+		u.Password as password,
+		u.Username as username,
+		u.`Status` as status,
+		u.Type as type,
+		u.CellPhone as cellPhone,
+		u.Email
+		as email,
+		u.SystemId as systemId,
+		u.CorpCode as corpCode,
+		u.Sex as sex,
+		u.PhoneNumber as phoneNumber,
+		u.WeChatID as weChatID,
+		case
+		when
+		u.EncryptionMode=1 then 'MD5'
+		when
+		u.EncryptionMode=2 then 'HASH'
+		when
+		u.EncryptionMode=3 then 'UNPWDMD5'
+		else NULL END
+		encryptionMode,
+		u.UserChannels as userChannels,
+		DATE_FORMAT(u.CreatedOn,'%Y-%m-%d') as
+		createdOn,
+		u.CreatedBy as createdBy,
+		u.IsDeleted as isDeleted,
+		u.Version as version,
+		u.BindState as bindState
+	</sql>
+	
+	<sql id="select_basics_sql_mq">
+		u.Pk as pk,
+		u.Id as id,
+		u.Account as account,
+		u.CustomerCode
+		as customerCode,
+		u.Password as password,
+		u.Username as username,
+		u.`Status` as status,
+		u.Type as type,
+		u.CellPhone as cellPhone,
+		u.Email
+		as email,
+		u.SystemId as systemId,
+		u.CorpCode as corpCode,
+		u.Sex as sex,
+		u.PhoneNumber as phoneNumber,
+		u.WeChatID as weChatID,
+		u.EncryptionMode as	encryptionMode,
+		u.UserChannels as userChannels,
+		DATE_FORMAT(u.CreatedOn,'%Y-%m-%d') as
+		createdOn,
+		u.CreatedBy as createdBy,
+		u.IsDeleted as isDeleted,
+		u.Version as version,
+		u.BindState as bindState
+	</sql>
+
+
+	<sql id="select_basic_sql">
+		u.Pk as pk,
+		u.Id as id,
+		u.Account as account,
+		u.CustomerCode
+		as customerCode,
+		u.Password as password,
+		u.Username as username,
+		u.`Status` as status,
+		u.Type as type,
+		u.CellPhone as cellPhone,
+		u.Email
+		as email,
+		u.SystemId as systemId,
+		u.CorpCode as corpCode,
+		u.Sex as sex,
+		u.PhoneNumber as phoneNumber,
+		u.WeChatID as weChatID,
+		case
+		when
+		u.EncryptionMode=1 then 'MD5'
+		when
+		u.EncryptionMode=2 then 'HASH'
+		when
+		u.EncryptionMode=3 then 'UNPWDMD5'
+		else NULL END
+		encryptionMode,
+		u.UserChannels as userChannels,
+		DATE_FORMAT(u.CreatedOn,'%Y-%m-%d') as
+		createdOn,
+		u.CreatedBy as createdBy,
+		u.IsDeleted as isDeleted,
+		u.Version
+		as version
+	</sql>
+
+	<sql id="insert_basics_sql">
+		Id,
+		Account,
+		Password,
+		CustomerCode,
+		Username,
+		Status,
+		Type,
+		CellPhone,
+		Email,
+		SystemId,
+		CorpCode,
+		Sex,
+		PhoneNumber,
+		WeChatID,
+		EncryptionMode,
+		UserChannels,
+		CreatedOn,
+		CreatedBy,
+		IsDeleted,
+		Version,
+		PhoneNumberConfirmed
+	</sql>
+
+	<sql id="insert_value_basics_sql">
+		#{id},
+		#{account},
+		#{password},
+		#{customerCode},
+		#{username},
+		#{status},
+		#{type},
+		#{cellPhone},
+		#{email},
+		#{systemId},
+		#{corpCode},
+		#{sex},
+		#{phoneNumber},
+		#{weChatID},
+		#{encryptionMode},
+		#{userChannels},
+		now(),
+		#{createdBy},
+		0,
+		#{version},
+		#{phoneNumberConfirmed}
+	</sql>
+
+	<sql id="select_detail_sql">
+		d.Id as id,
+		d.UserId as userId,
+		d.NickName as nickName,
+		DATE_FORMAT(d.BirthDay,'%Y-%m-%d') as birthDay,
+		d.RegisterDate as
+		registerDate,
+		d.EmailConfirmed as emailConfirmed,
+		d.PhoneNumberConfirmed as phoneNumberConfirmed,
+		d.MemberFrom as
+		memberFrom,
+		d.Description as description,
+		d.AreaID as areaID,
+		d.HomeAddress as homeAddress,
+		d.UserNo as userNo,
+		d.Signature as
+		signature,
+		d.LastLoginTime as lastLoginTime,
+		d.LoginIp as loginIp,
+		d.IsInternal as isInternal,
+		d.Salt as salt,
+		DATE_FORMAT(d.EnteryTime,'%Y-%m-%d') as enteryTime,
+		DATE_FORMAT(d.CreatedOn,'%Y-%m-%d %H:%i:%s') as createdOn,
+		d.CreatedBy
+		as createdBy,
+		DATE_FORMAT(d.ModifiedOn,'%Y-%m-%d %H:%i:%s') as
+		modifiedOn,
+		d.ModifiedBy as modifiedBy,
+		d.IsDeleted as isDeleted,
+		d.Version as version
+	</sql>
+
+	<sql id="insert_detail_sql">
+		Id,
+		UserId,
+		NickName,
+		BirthDay,
+		RegisterDate,
+		EmailConfirmed,
+		PhoneNumberConfirmed,
+		MemberFrom,
+		Description,
+		AreaID,
+		HomeAddress,
+		UserNo,
+		Signature,
+		LastLoginTime,
+		LoginIp,
+		IsInternal,
+		Salt,
+		EnteryTime,
+		CreatedOn,
+		CreatedBy,
+		IsDeleted,
+		Version
+	</sql>
+
+	<sql id="insert_value_detail_sql">
+		#{id},
+		#{userId},
+		#{nickName},
+		#{birthDay},
+		#{registerDate},
+		#{emailConfirmed},
+		#{phoneNumberConfirmed},
+		#{memberFrom},
+		#{description},
+		#{areaID},
+		#{homeAddress},
+		#{userNo},
+		#{signature},
+		#{lastLoginTime},
+		#{loginIp},
+		#{isInternal},
+		#{salt},
+		#{enteryTime},
+		now(),
+		#{createdBy},
+		0,
+		#{version}
+	</sql>
+
+	<select id="queryUserBasicsInfoById" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT 
+		u.PhoneNumberConfirmed as phoneNumberConfirmed,
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u
+		where
+		u.Id = #{id}
+	</select>
+	
+	<select id="queryUserBasicsInfoForMQById" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT 
+		u.PhoneNumberConfirmed as phoneNumberConfirmed,
+		<include refid="select_basics_sql_mq" />
+		FROM
+		UserBasicsInfo u
+		where
+		u.Id = #{id}
+	</select>
+
+	<select id="queryUserBasicsInfoByCellphone" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u
+		where
+		u.Id = #{id}
+	</select>
+
+	<select id="queryUserListByOrganizationId" resultType="com.mdm.response.UserGridResponse">
+		select	
+		u.PhoneNumberConfirmed as phoneNumberConfirmed,
+		<include refid="select_basic_sql" />
+		FROM
+		UserBasicsInfo u
+		<if
+			test="orgType != null and orgType != '' and orgType!='-2' and orgType!='-3'">
+			INNER JOIN UserOrganizationRole AS uor ON
+			u.id = uor.UserId
+			INNER
+			JOIN Organazation AS o
+			ON
+			o.Id=uor.OrganizationId
+		</if>
+		<if test="orgType != null and orgType != '' and orgType=='-3' ">
+			INNER JOIN UserOrganizationRole AS uor ON
+			u.id = uor.UserId
+			INNER JOIN Merchant AS m ON
+			m.Id = uor.OrganizationId
+		</if>
+		<where>
+			<!-- <if test="direction=='forward' and lastMaxPk != null"> and u.Pk &lt; 
+				${lastMaxPk} </if> <if test="direction=='backward' and lastMinPk != null"> 
+				and u.Pk &gt; ${lastMinPk} </if> -->
+			<if test="userChannels == 0">
+				and u.UserChannels = 0
+			</if>
+			<if test="userChannels != 0">
+				and u.UserChannels &amp; ${userChannels} =
+				${userChannels}
+			</if>
+			<if
+				test="organizationId != null and organizationId != '' and orgType!='-2' ">
+				and uor.OrganizationId = #{organizationId}
+			</if>
+			<if test="account != null and account != ''">
+				and u.account like
+				CONCAT('%','${account}','%' )
+			</if>
+			<if test="name != null and name != ''">
+				and u.username like
+				CONCAT('%','${name}','%')
+			</if>
+			<if test="cellPhone != null and cellPhone != ''">
+				and u.cellPhone like
+				CONCAT('%','${cellPhone}','%')
+			</if>
+			<if test="corpCode != null and corpCode != ''">
+				and u.CorpCode = #{corpCode}
+			</if>
+			<if test="sex != null and sex != ''">
+				and u.sex = ${sex}
+			</if>
+			<if test="status != null and status != ''">
+				and u.status = ${status}
+			</if>
+			<!-- <if test="orgType == '0' "> and Organazation.Type=#{orgType} </if> -->
+			<if test="systemId != null and systemId != ''">
+				and u.SystemId = '${systemId}'
+			</if>
+			<if test="beginDate != null and beginDate != ''">
+				<![CDATA[ 
+					and u.CreatedOn >= '${beginDate}'
+				]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[ 
+					and u.CreatedOn <= '${endDate}'
+				]]>
+			</if>
+			and u.IsDeleted = 0
+			<if
+				test="orgType != null and orgType != '' and orgType!='-2' and orgType!='-3'">
+				and o.Type = #{orgType}
+				GROUP BY u.Pk
+			</if>
+			<if test=" orgType=='-3'">
+				and uor.Type = 1
+				GROUP BY u.Pk
+			</if>
+		</where>
+		order by u.Pk DESC
+		<!-- <if test="direction=='forward'"> order by u.Pk DESC </if> <if test="direction=='backward'"> 
+			order by u.Pk ASC </if> limit ${from}, ${pageSize} -->
+
+	</select>
+
+	<select id="queryMemberList" resultType="com.mdm.response.UserGridResponse">
+		select
+		u.PhoneNumberConfirmed as phoneNumberConfirmed,
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u
+		<where>
+			<if test="account != null and account != ''">
+				and u.account like CONCAT('%','${account}','%' )
+			</if>
+			<if test="name != null and name != ''">
+				and u.username like CONCAT('%','${name}','%'
+				)
+			</if>
+			<if test="sex != null and sex != ''">
+				and u.sex = '${sex}'
+			</if>
+			<if test="cellPhone != null and cellPhone != ''">
+				and u.cellPhone like CONCAT('%','${cellPhone}','%')
+			</if>
+			<if test="status != null and status != ''">
+				and u.status = '${status}'
+			</if>
+			<if test="systemId != null and systemId != ''">
+				and u.SystemId ='${systemId}'
+			</if>
+			<if test="beginDate != null and beginDate != ''">
+				<![CDATA[ 
+					and u.CreatedOn >= #{beginDate}
+				]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[ 
+					and u.CreatedOn <= #{endDate}
+				]]>
+			</if>
+			and u.UserChannels != 0
+			and u.UserChannels != 2
+			and u.IsDeleted=0
+		</where>
+	</select>
+
+	<insert id="insertUserBasicsInfo">
+		INSERT INTO UserBasicsInfo
+		(
+		<include refid="insert_basics_sql" />
+		) values(
+		<include refid="insert_value_basics_sql" />
+		)
+	</insert>
+
+	<update id="updateUserBasicsInfo">
+		UPDATE UserBasicsInfo set
+		<trim suffixOverrides=",">
+			<if test="userBasicsInfo.account !=null and userBasicsInfo.account !=''">
+				Account = #{userBasicsInfo.account},
+			</if>
+			<if test="userBasicsInfo.password !=null and userBasicsInfo.password !=''">
+				Password = #{userBasicsInfo.password},
+			</if>
+			<if test="userBasicsInfo.eMode !=null">
+				EncryptionMode = #{userBasicsInfo.eMode},
+			</if>
+			<if
+				test="userBasicsInfo.customerCode != null and userBasicsInfo.customerCode != '' ">
+				CustomerCode = #{userBasicsInfo.customerCode},
+			</if>
+			<if
+				test="userBasicsInfo.username != null and userBasicsInfo.username !='' ">
+				Username = #{userBasicsInfo.username},
+			</if>
+			<if test="userBasicsInfo.status != null">
+				Status=#{userBasicsInfo.status},
+			</if>
+			<if test="userBasicsInfo.type != null">
+				Type=#{userBasicsInfo.type},
+			</if>
+			<if
+				test="userBasicsInfo.cellPhone != null and userBasicsInfo.cellPhone !='' ">
+				CellPhone = #{userBasicsInfo.cellPhone},
+			</if>
+			<if test="userBasicsInfo.email != null and userBasicsInfo.email !='' ">
+				Email = #{userBasicsInfo.email},
+			</if>
+			<if
+				test="userBasicsInfo.systemId !=null and userBasicsInfo.systemId !='' ">
+				SystemId = #{userBasicsInfo.systemId},
+			</if>
+			<if test="userBasicsInfo.userChannels != null">
+				UserChannels=#{userBasicsInfo.userChannels},
+			</if>
+			<if
+				test="userBasicsInfo.corpCode !=null and userBasicsInfo.corpCode !='' ">
+				CorpCode = #{userBasicsInfo.corpCode},
+			</if>
+			<if test="userBasicsInfo.sex !=null">
+				Sex = #{userBasicsInfo.sex},
+			</if>
+			<if
+				test="userBasicsInfo.phoneNumber !=null and userBasicsInfo.phoneNumber !='' ">
+				PhoneNumber = #{userBasicsInfo.phoneNumber},
+			</if>
+			<if
+				test="userBasicsInfo.weChatID !=null and userBasicsInfo.weChatID !='' ">
+				WeChatID = #{userBasicsInfo.weChatID},
+			</if>
+			<if
+				test="userBasicsInfo.modifiedBy !=null and userBasicsInfo.modifiedBy !='' ">
+				ModifiedBy = #{userBasicsInfo.modifiedBy},
+			</if>
+			<if test="userBasicsInfo.version !=null and userBasicsInfo.version !='' ">
+				Version = #{userBasicsInfo.version},
+			</if>
+			<if test="userBasicsInfo.phoneNumberConfirmed !=null">
+				PhoneNumberConfirmed = #{userBasicsInfo.phoneNumberConfirmed},
+			</if>
+			<if test="userBasicsInfo.bindState !=null">
+				BindState = #{userBasicsInfo.bindState},
+			</if>
+			<if test="userBasicsInfo.isDeleted !=null">
+				IsDeleted = #{userBasicsInfo.isDeleted},
+			</if>
+			ModifiedOn = now()
+		</trim>
+		where id = #{userBasicsInfo.id}
+		<if test="version != null and version != '' ">
+			and version=#{version}
+		</if>
+	</update>
+
+	<delete id="deleteUserBasicsInfo">
+		update UserBasicsInfo
+		set
+		IsDeleted = 1,
+		Version=#{version},
+		ModifiedBy=#{modifiedBy},
+		ModifiedOn=now()
+		where
+		id=#{id}
+	</delete>
+
+	<select id="queryUserDetailInfoByUserId" resultType="com.mdm.pojo.UserDetailInfo">
+		SELECT
+		<include refid="select_detail_sql" />
+		FROM
+		UserDetailInfo d
+		where
+		UserId = #{userId}
+	</select>
+
+	<insert id="insertUserDetailInfo">
+		INSERT INTO UserDetailInfo
+		(
+		<include refid="insert_detail_sql" />
+		) values(
+		<include refid="insert_value_detail_sql" />
+		)
+	</insert>
+
+	<update id="updateUserDetailInfo">
+		UPDATE UserDetailInfo set
+		<trim suffixOverrides=",">
+			<if test="nickName != null and nickName != '' ">
+				NickName = #{nickName},
+			</if>
+			<if test="birthDay != null and birthDay != '' ">
+				BirthDay = #{birthDay},
+			</if>
+			<!-- <if test="registerDate != null and registerDate != '' ">
+				RegisterDate = #{registerDate},
+			</if> -->
+			<if test="emailConfirmed != null ">
+				EmailConfirmed = #{emailConfirmed},
+			</if>
+			<if test="phoneNumberConfirmed != null ">
+				PhoneNumberConfirmed = #{phoneNumberConfirmed},
+			</if>
+			<if test="memberFrom != null and memberFrom != '' ">
+				MemberFrom = #{memberFrom},
+			</if>
+			<if test="description != null and description != '' ">
+				Description = #{description},
+			</if>
+			<if test="areaID != null and areaID != '' ">
+				AreaID = #{areaID},
+			</if>
+			<if test="homeAddress != null and homeAddress != '' ">
+				HomeAddress = #{homeAddress},
+			</if>
+			<if test="userNo != null ">
+				UserNo = #{userNo},
+			</if>
+			<if test="signature != null and signature != '' ">
+				Signature = #{signature},
+			</if>
+			<if test="lastLoginTime != null and lastLoginTime != '' ">
+				LastLoginTime = #{lastLoginTime},
+			</if>
+			<if test="loginIp != null and loginIp != '' ">
+				LoginIp = #{loginIp},
+			</if>
+			<if test="isInternal != null ">
+				IsInternal = #{isInternal},
+			</if>
+			<if test="salt != null and salt != '' ">
+				Salt = #{salt},
+			</if>
+			<if test="enteryTime != null and enteryTime != '' ">
+				EnteryTime = #{enteryTime},
+			</if>
+			<if test="modifiedBy !=null and modifiedBy !='' ">
+				ModifiedBy = #{modifiedBy},
+			</if>
+			<if test="version !=null and version !='' ">
+				Version = #{version},
+			</if>
+			<if test="isDeleted !=null">
+				IsDeleted = #{isDeleted},
+			</if>
+			ModifiedOn = now()
+		</trim>
+		where UserId = #{userId}
+	</update>
+
+	<delete id="deleteUserDetailInfo">
+		update UserDetailInfo
+		set
+		IsDeleted = 1,
+		Version=#{version},
+		ModifiedBy=#{modifiedBy},
+		ModifiedOn=now()
+		where
+		UserId=#{id}
+	</delete>
+
+	<select id="queryUserAccount" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u
+		where
+		u.account = #{account}
+		and
+		u.IsDeleted = 0
+	</select>
+
+	<select id="queryUserByCellphone" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u 
+		where 
+		u.BindState > 0
+		and u.cellphone = #{cellphone}
+		and u.IsDeleted = 0
+	</select>
+	
+	<select id="queryUserByCellphoneNoS" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u 
+		where u.cellphone = #{cellphone}
+		and u.IsDeleted = 0
+	</select>
+
+	<select id="queryUserAccountOrCellphone" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT
+		<include refid="select_basics_sql" />
+		FROM
+		UserBasicsInfo u 
+		where
+		(
+		u.cellphone = #{account}
+			and u.BindState > 0
+		)
+		and u.IsDeleted = 0
+	</select>
+	
+	<select id="queryUserAccountOrCellphoneNoS" resultType="com.mdm.pojo.UserBasicsInfo">
+		SELECT
+		<include refid="select_basics_sql" />
+		FROM UserBasicsInfo u 
+		where u.cellphone = #{account}
+		and u.IsDeleted = 0
+	</select>
+
+	<select id="queryUserOrganizationRoleList" resultType="com.mdm.pojo.UserOrganizationRole">
+		select
+		DISTINCT
+		Id,UserId,OrganizationId,RoleId,systemId,`Type`,CreatedOn,CreatedBy,ModifiedOn,ModifiedBy
+		FROM
+		UserOrganizationRole
+		WHERE
+		UserId=#{userId}
+	</select>
+
+	<delete id="deleteUserOrganizationRole">
+		delete FROM UserOrganizationRole where
+		UserId=#{userId}
+		<if test="systemId !=null and systemId !=''">and SystemId=#{systemId}</if>
+	</delete>
+
+	<delete id="deleteUserOrganizationRoleByRoleId">
+		delete FROM UserOrganizationRole where
+		RoleId=#{roleId}
+	</delete>
+
+	<insert id="insertUserOrganizationRoleList" parameterType="java.util.List">
+		insert into UserOrganizationRole (
+		Id,
+		RoleId,
+		UserId,
+		OrganizationId,
+		Type,
+		CreatedOn,
+		CreatedBy,
+		IsDeleted,
+		SystemId)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			( #{item.id},
+			#{item.roleId},
+			#{item.userId},
+			#{item.organizationId},
+			#{item.type},
+			now(),
+			#{item.createdBy},
+			0,
+			#{item.systemId})
+		</foreach>
+	</insert>
+
+	<delete id="deleteUserChannel">
+		delete FROM UserChannel where
+		UserId=#{userId}
+	</delete>
+
+	<insert id="insertUserChannelList" parameterType="java.util.List">
+		insert into UserChannel (
+		Id,
+		UserId,
+		ChannelCode,
+		CreatedOn,
+		CreatedBy,
+		IsDeleted )
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			( #{item.id},
+			#{item.userId},
+			#{item.channelCode},
+			now(),
+			#{item.createdBy},
+			0)
+		</foreach>
+	</insert>
+
+	<select id="queryUserChannelList" resultType="com.mdm.pojo.UserChannel">
+		select
+		Id,UserId,ChannelCode
+		FROM
+		UserChannel
+		Where UserId=#{userId}
+	</select>
+
+	<select id="queryUserChannelForDel" resultType="com.mdm.pojo.UserChannel">
+		select
+		Id,UserId,ChannelCode
+		FROM
+		UserChannel
+		Where UserId=#{userId}
+		and ChannelCode = 1
+	</select>
+	<update id="batchDeleteUsers" parameterType="java.util.List">
+		update UserBasicsInfo
+		set
+		IsDeleted = 1,
+		Version=#{version}
+		Where id in
+		<foreach collection="ids" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<update id="batchUpdateStatus">
+		update UserBasicsInfo
+		set
+		Status = #{status},
+		Version=#{version}
+		Where id
+		in
+		<foreach collection="ids" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<update id="updatePasswordByPassword">
+		update UserBasicsInfo
+		set
+		Password = #{newPassword},
+		Version=#{version},
+		EncryptionMode = '1'
+		Where
+		Id=#{id}
+		and
+		Password=#{oldPassword}
+	</update>
+
+	<update id="resetPassword">
+		update UserBasicsInfo
+		set
+		Password = #{password},
+		Version=#{version},
+		EncryptionMode = '1'
+		Where
+		Id=#{id}
+	</update>
+
+	<select id="validateCellPhone" resultType="Integer">
+		SELECT Count(u.Id)
+		FROM
+		UserBasicsInfo u 
+		where 
+		u.BindState > 0
+		and u.CellPhone = #{cellPhone}
+		<trim>
+			<if test="id !=null and id !=''">and u.Id != #{id}</if>
+		</trim>
+		and u.IsDeleted = 0
+	</select>
+	
+	<select id="validateCellPhoneNoS" resultType="Integer">
+		SELECT Count(u.Id)
+		FROM
+		UserBasicsInfo u 
+		where u.CellPhone = #{cellPhone}
+		<trim>
+			<if test="id !=null and id !=''">and u.Id != #{id}</if>
+		</trim>
+		and u.IsDeleted = 0
+	</select>
+
+	<select id="validatePassword" resultType="Integer">
+		SELECT Count(u.Id)
+		FROM
+		UserBasicsInfo u 
+		where
+		u.Id = #{id}
+		and u.Password=#{password}
+		and u.IsDeleted = 0
+	</select>
+	<select id="validateAccount" resultType="Integer">
+		SELECT Count(*)
+		FROM
+		UserBasicsInfo
+		where
+		Account =
+		#{account} and
+		IsDeleted = 0
+		<trim>
+			<if test="id !=null and id !=''">and Id != #{id}</if>
+		</trim>
+	</select>
+
+	<update id="batchUsersResetPassword" parameterType="java.util.List">
+		update UserBasicsInfo
+		set
+		Version=#{version},
+		Password = #{password},
+		EncryptionMode = '1'
+		Where id in
+		<foreach collection="ids" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<select id="verifyPhone" resultType="Integer">
+		SELECT count(u.Id)
+		FROM
+		UserBasicsInfo u 
+		where u.BindState > 0
+		and u.CellPhone = #{cellPhone}
+		and u.IsDeleted = 0
+		<trim>
+			<if test="id !=null and id !=''">
+				and u.Id != #{id}
+			</if>
+		</trim>
+	</select>
+
+	<select id="isMerChant" resultType="Integer">
+		select count(Id) from
+		Merchant where Id = #{id}
+	</select>
+	
+	<update id="recoverUserBasicsInfo">
+		UPDATE UserBasicsInfo set
+		<trim suffixOverrides=",">
+			Account = #{userBasicsInfo.account},
+			Password = #{userBasicsInfo.password},
+			EncryptionMode = #{userBasicsInfo.encryptionMode},
+			CustomerCode = #{userBasicsInfo.customerCode},
+			Username = #{userBasicsInfo.username},
+			Status=#{userBasicsInfo.status},
+			Type=#{userBasicsInfo.type},
+			CellPhone = #{userBasicsInfo.cellPhone},
+			Email = #{userBasicsInfo.email},
+			SystemId = #{userBasicsInfo.systemId},
+			CorpCode = #{userBasicsInfo.corpCode},
+			Sex = #{userBasicsInfo.sex},
+			PhoneNumber = #{userBasicsInfo.phoneNumber},
+			WeChatID = #{userBasicsInfo.weChatID},
+			ModifiedBy = #{userBasicsInfo.modifiedBy},
+			Version = #{userBasicsInfo.version},
+			UserChannels = #{userBasicsInfo.userChannels},
+			ModifiedOn = now(),
+			PhoneNumberConfirmed = #{userBasicsInfo.phoneNumberConfirmed},
+			BindState = #{userBasicsInfo.bindState}
+		</trim>
+		where id = #{userBasicsInfo.id}
+		<if test="version != null and version != '' ">
+			and version=#{version}
+		</if>
+	</update>
+
+	<update id="recoverUserDetailInfo">
+		UPDATE UserDetailInfo set
+		<trim suffixOverrides=",">
+			NickName = #{nickName},
+			BirthDay =
+			#{birthDay},
+			RegisterDate = #{registerDate},
+			EmailConfirmed =
+			#{emailConfirmed},
+			PhoneNumberConfirmed = #{phoneNumberConfirmed},
+			MemberFrom = #{memberFrom},
+			Description = #{description},
+			AreaID =
+			#{areaID},
+			HomeAddress = #{homeAddress},
+			UserNo = #{userNo},
+			Signature =
+			#{signature},
+			LastLoginTime = #{lastLoginTime},
+			LoginIp = #{loginIp},
+			IsInternal = #{isInternal},
+			Salt = #{salt},
+			EnteryTime = #{enteryTime},
+			ModifiedBy = #{modifiedBy},
+			Version = #{version},
+			ModifiedOn = now()
+		</trim>
+		where UserId = #{userId}
+	</update>
+
+	<delete id="deleteBackEndUserChannel">
+		delete FROM UserChannel where
+		UserId = #{userId}
+		and
+		ChannelCode = 1
+	</delete>
+
+	<select id="queryBackEndUserChannelList" resultType="com.mdm.pojo.UserChannel">
+		select
+		Id,UserId,ChannelCode
+		FROM
+		UserChannel
+		Where UserId=#{userId}
+		<if test="channelCode != null and channelCode ==1">
+			and ChannelCode = 1
+		</if>
+		<if test="channelCode != null and channelCode != 1">
+			<![CDATA[ 
+				and ChannelCode <> 1
+			]]>
+		</if>
+	</select>
+
+	<select id="nextPK" resultType="Integer">
+		select Max(Pk) from
+		UserBasicsInfo
+	</select>
+
+	<select id="validateUserType" resultType="Integer">
+		select count(uor.Id)
+		from UserOrganizationRole uor,Organazation o
+		where uor.OrganizationId =
+		o.Id
+		and uor.UserId = #{userId}
+		and o.Type =
+		#{orgType}
+	</select>
+</mapper>

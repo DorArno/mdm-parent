@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.district.DistrictMapper">
+	
+	<sql id="select_sql">
+		District.Id as id,
+		District.ParentId as parentId,
+		District.`Code` as code,
+		District.`Name` as name,
+		District.PostCode as
+		postCode,
+		District.Longitude as longitude,
+		District.Latitude as
+		latitude,
+		District.Type as type,
+		District.`Level` as level,
+		District.Description as description,
+		DATE_FORMAT(District.CreatedOn,'%Y-%m-%d %H:%i:%s') as createdOn,
+		District.CreatedBy as createdBy,
+		DATE_FORMAT(District.ModifiedOn,'%Y-%m-%d %H:%i:%s') as modifiedOn,
+		District.ModifiedBy as modifiedBy,
+		District.IsDeleted as isDeleted,
+		District.Path as path
+	</sql>
+
+	<sql id="insert_sql">
+		Id,
+		ParentId,
+		Code,
+		Name,
+		PostCode,
+		Longitude,
+		Latitude,
+		Type,
+		Level,
+		Description,
+		CreatedOn,
+		CreatedBy,
+		IsDeleted
+	</sql>
+
+	<sql id="insert_value_sql">
+		#{id},
+		#{parentId},
+		#{code},
+		#{name},
+		#{postCode},
+		#{longitude},
+		#{latitude},
+		#{type},
+		#{level},
+		#{description},
+		now(),
+		#{createdBy},
+		0
+	</sql>
+
+	<select id="queryById" resultType="com.mdm.pojo.District">
+		SELECT
+		<include refid="select_sql" />
+		FROM
+		District
+		where
+		id = #{id}
+	</select>
+
+	<select id="queryByParentId" resultType="com.mdm.pojo.District">
+		select
+		<include refid="select_sql" />
+		FROM
+		District
+		<where>
+			and IsDeleted=0
+			<if test="parentId != null and parentId != '' and parentId != 'null'">
+				and ParentId = #{parentId}
+			</if>
+			<if test="name != null and name != ''">
+				and name like CONCAT('%','${name}','%' )
+			</if>
+			<if test="level != null and level != ''">
+				and level = #{level}
+			</if>
+			<if test="code != null and code != ''">
+				and code like CONCAT('%','${code}','%' )
+			</if>
+			<if test="createdDate != null and  createdDate != ''">
+            <![CDATA[ and createdOn >=  #{createdDate}]]>
+			</if>
+		</where>
+		ORDER BY createdOn DESC
+	</select>
+
+	<insert id="insert">
+		INSERT INTO District(
+		<include refid="insert_sql" />
+		) values(
+		<include refid="insert_value_sql" />
+		)
+	</insert>
+
+	<delete id="delete">
+		update District set IsDeleted = 1 where id = #{id}
+	</delete>
+
+	<update id="update">
+		UPDATE District set
+		<trim suffixOverrides=",">
+			<if test="name !=null and name !=''">name = #{name},</if>
+			<if test="code !=null and code !=''">code = #{code},</if>
+			<if test="modifiedBy !=null and modifiedBy !=''">ModifiedBy = #{modifiedBy},</if>
+			Longitude = #{longitude},
+			Latitude = #{latitude},
+			<if test="level != null and level != ''">Level = #{level},</if>
+			Description = #{description},
+			PostCode = #{postCode},
+			<if test="isDeleted !=null">IsDeleted = #{isDeleted},</if>
+			ModifiedOn = now()
+
+		</trim>
+		where id = #{id}
+
+
+	</update>
+	
+	<insert id="batchInsert">
+		INSERT INTO District(
+			Id,
+			ParentId,
+			Code,
+			Name,
+			PostCode,
+			Longitude,
+			Latitude,
+			Type,
+			Level,
+			Description,
+			CreatedOn,
+			CreatedBy,
+			IsDeleted,
+			Version,
+			Path
+		) values
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.id},
+			#{item.parentId},
+			#{item.code},
+			#{item.name},
+			#{item.postCode},
+			#{item.longitude},
+			#{item.latitude},
+			1,
+			#{item.level},
+			#{item.description},
+			now(),
+			#{item.createdBy},
+			0,
+			#{item.version},
+			#{item.path}
+		)
+		</foreach>
+	</insert>
+	
+	<update id="batchUpdate">
+		<foreach collection="list" item="item" index="index" separator=";">
+			UPDATE District set
+			<trim suffixOverrides=",">
+				<if test="item.name !=null and item.name !=''">name = #{item.name},</if>
+				<if test="item.code !=null and item.code !=''">code = #{item.code},</if>
+				<if test="item.modifiedBy !=null and item.modifiedBy !=''">ModifiedBy = #{item.modifiedBy},</if>
+				<if test="item.longitude != null and item.longitude != ''">Longitude = #{item.longitude},</if>
+				<if test="item.latitude != null and item.latitude != ''">Latitude = #{item.latitude},</if>
+				<if test="item.level != null and item.level != ''">Level = #{item.level},</if>
+				<if test="item.description != null and item.description != ''">Description = #{item.description},</if>
+				<if test="item.postCode != null and item.postCode != ''">PostCode = #{item.postCode},</if>
+				<if test="item.isDeleted !=null">IsDeleted = #{item.isDeleted},</if>
+				<if test="item.version != null and item.version != ''">Version = #{item.version},</if>
+				ModifiedOn = now(),
+				<if test="item.path != null and item.path != ''">Path = #{item.path}</if>
+			</trim>
+			where id = #{item.id}
+		</foreach>
+	</update>
+	
+	<select id="exportDistrictList" resultType="com.mdm.exportBean.DistrictExport">
+		select
+			t1.ParentId as parentId
+			, t2.`Name` as ParentName
+			, t1.`Code` as `code`
+			, t1.`Name` as `name`
+			, t1.PostCode as postCode
+			, t1.Longitude as longitude
+			, t1.Latitude as latitude
+			, t1.`Level` as `level`
+			, t1.Description as description
+		from District t1
+		LEFT JOIN District t2 on t1.ParentId = t2.Id
+		<where>
+			and t1.IsDeleted=0
+			<if test="parentId != null and parentId != '' and parentId != 'null'">
+				and t1.ParentId = #{parentId}
+			</if>
+			<if test="name != null and name != ''">
+				and t1.name like CONCAT('%','${name}','%' )
+			</if>
+			<if test="level != null and level != ''">
+				and t1.level = #{level}
+			</if>
+			<if test="code != null and code != ''">
+				and t1.code like CONCAT('%','${code}','%' )
+			</if>
+			<if test="createdDate != null and  createdDate != ''">
+            <![CDATA[ and t1.createdOn >=  #{createdDate}]]>
+			</if>
+		</where>
+		ORDER BY t1.createdOn DESC
+	</select>
+	
+	<select id="queryCodeIdMap" resultType="com.mdm.importBean.DistrictCodeId">
+		select
+		Id
+		, Code
+		FROM
+		District
+		WHERE IsDeleted = 0
+	</select>
+
+	<select id="queryAllLevel3List" resultType="com.mdm.importBean.DistrictCodeId">
+		select
+		Id
+		, Code
+		, `Name`
+		FROM
+		District
+		WHERE IsDeleted = 0 AND Level <![CDATA[ <= ]]> 3
+	</select>
+</mapper>

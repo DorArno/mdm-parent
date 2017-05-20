@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.operation.OperationMapper">
+
+	<resultMap id="Operation" type="com.mdm.pojo.Operation">
+		<result property="id" column="ID" />
+		<result property="moduleId" column="ModuleId" />
+		<result property="actionName" column="ActionName" />
+		<result property="keyCode" column="KeyCode" />
+		<result property="isDeleted" column="IsDeleted" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="modifiedBy" column="ModifiedBy" />
+		<result property="modifiedOn" column="ModifiedOn" />
+		<result property="path" column="Path" />
+		<result property="httpMethod" column="HttpMethod" />
+		<association property="module" javaType="com.mdm.pojo.Module"
+			resultMap="Module" />
+	</resultMap>
+
+	<resultMap id="Module" type="com.mdm.pojo.Module">
+		<result property="moduleName" column="ModuleName" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into Operation (
+		ID
+		, ModuleId
+		, ActionName
+		, KeyCode
+		, IsDeleted
+		, CreatedBy
+		, CreatedOn
+		, ModifiedBy
+		, ModifiedOn
+		, Path
+        , HttpMethod
+		) values (
+		#{id}
+		, #{moduleId}
+		, #{actionName}
+		, #{keyCode}
+		, #{isDeleted}
+		, #{createdBy}
+		, #{createdOn}
+		, #{modifiedBy}
+		, #{modifiedOn}
+		, #{path}
+         , #{httpMethod}
+		)
+	</insert>
+
+	<update id="update">
+		update
+		Operation
+		<set>
+			<if test="moduleId != null and moduleId != ''">ModuleId =
+				#{moduleId},
+			</if>
+			<if test="actionName != null and actionName != ''">ActionName =
+				#{actionName},
+			</if>
+			<if test="keyCode != null and keyCode != ''">KeyCode =
+				#{keyCode},
+			</if>
+			<if test="isDeleted != null">IsDeleted =
+				#{isDeleted},
+			</if>
+			<if test="createdBy != null and createdBy != ''">CreatedBy =
+				#{createdBy},
+			</if>
+			<if test="createdOn != null">CreatedOn =
+				#{createdOn},
+			</if>
+			<if test="modifiedBy != null and modifiedBy != ''">ModifiedBy =
+				#{modifiedBy},
+			</if>
+			<if test="modifiedOn != null">ModifiedOn =
+				#{modifiedOn},
+			</if>
+			<if test="path != null and path != ''">Path =
+              #{path},
+             </if>
+             <if test="httpMethod != null and httpMethod != ''">HttpMethod =
+                 #{httpMethod}
+             </if>
+		</set>
+		where
+		ID = #{id}
+	</update>
+
+	<select id="getById" resultMap="Operation">
+		select
+		ID
+		, ModuleId
+		, ActionName
+		, KeyCode
+		, IsDeleted
+		, CreatedBy
+		, CreatedOn
+		, ModifiedBy
+		, ModifiedOn
+		from
+		Operation
+		where
+		ID = #{id}
+	</select>
+
+	<update id="deleteById">
+		 update
+        	Operation
+        set
+        	IsDeleted = #{isDeleted}
+        ,	ModifiedBy = #{modifiedBy}
+        ,	ModifiedOn = #{modifiedOn}
+                    where
+        ID = #{id}
+	</update>
+
+	<update id="deleteByModuleId">
+		update
+        	Operation
+        set
+        	IsDeleted = #{isDeleted}
+        ,   ModifiedBy = #{modifiedBy}
+        ,   ModifiedOn = #{modifiedOn}
+		where
+			ModuleId = #{moduleId}
+	</update>
+	
+	<select id="queryModuleList" resultMap="Module">
+		 select
+                                               
+                                               DISTINCT  m.ModuleName
+                            from
+        Operation o join Module m on o.ModuleId = m.id
+        <where>
+        	 o.IsDeleted = '0'
+        </where>
+	</select>
+
+	<select id="queryList" parameterType="map"
+            resultMap="Operation">
+        select
+                                            o.ID
+                                                , o.ModuleId
+                                                , o.ActionName
+                                                , o.KeyCode
+                                                , o.IsDeleted
+                                                , o.CreatedBy
+                                                , o.CreatedOn
+                                                , o.ModifiedBy
+                                                , o.ModifiedOn
+                                                , o.Path
+                                                , o.HttpMethod
+                                                , m.ModuleName
+                            from
+        Operation o join Module m on o.ModuleId = m.id
+        <where>
+        	<if test="isDeleted != null">and o.IsDeleted = #{isDeleted}</if>
+        	<if test="actionName != null and actionName != ''">and o.ActionName LIKE CONCAT('%',#{actionName},'%')</if>
+        	<if test="keyCode != null and keyCode != ''">and o.KeyCode LIKE CONCAT('%',#{keyCode},'%')</if>
+        	<if test="path != null and path != ''">and o.Path LIKE CONCAT('%',#{path},'%')</if>
+        	<if test="httpMethod != null and httpMethod != ''">and o.HttpMethod = #{httpMethod}</if>
+        	<if test="moduleName != null and moduleName != ''">and m.ModuleName = #{moduleName}</if>
+        </where>
+        order by o.CreatedOn desc
+    </select>
+
+	<select id="queryUserRoleOpertionList" parameterType="map"
+            resultMap="Operation">
+        select
+        	distinct o.Id,o.KeyCode,o.Path,o.HttpMethod
+		from
+        	UserOrganizationRole ur,Role r,RoleOperation ro,Operation o,Module m
+        where
+        	ur.UserId = #{userId}
+        and ur.IsDeleted = #{isDeleted}
+        and ur.RoleId = r.Id
+        and r.Status = #{moduleState}
+        and ur.RoleId = ro.RoleId
+        and ro.OperationId = o.ID
+        and ro.IsDeleted = #{isDeleted}
+        and ro.ActionId = m.id
+        and m.ModuleState = #{moduleState}
+    </select>
+
+</mapper>

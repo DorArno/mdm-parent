@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mdm.dao.write.merchant.MerchantWriteMapper">
+
+ <!--    <resultMap id="Merchant" type="com.mdm.core.bean.pojo.Merchant">
+                    <result property="id" column="Id"/>
+                    <result property="createdOn" column="CreatedOn"/>
+                    <result property="createdBy" column="CreatedBy"/>
+                    <result property="modifiedOn" column="ModifiedOn"/>
+                    <result property="modifiedBy" column="ModifiedBy"/>
+                    <result property="isDeleted" column="IsDeleted"/>
+                    <result property="organizationId" column="Organization_ID"/>
+                    <result property="mName" column="MName"/>
+                    <result property="code" column="Code"/>
+                    <result property="title" column="Title"/>
+                    <result property="mManager" column="MManager"/>
+                    <result property="contactTel" column="ContactTel"/>
+                    <result property="serviceTel" column="ServiceTel"/>
+                    <result property="address" column="Address"/>
+                    <result property="province" column="Province"/>
+                    <result property="city" column="City"/>
+                    <result property="distict" column="Distict"/>
+                    <result property="type" column="Type"/>
+                    <result property="levels" column="Levels"/>
+                    <result property="status" column="Status"/>
+                    <result property="description" column="Description"/>
+                    <result property="idOrganizationType" column="ID_Organization_Type"/>
+                    <result property="imageUrl" column="ImageUrl"/>
+                    <result property="longitude" column="Longitude"/>
+                    <result property="latitude" column="Latitude"/>
+                    <result property="isHighQualityMerchants" column="IsHighQualityMerchants"/>
+                    <result property="parkingNumber" column="ParkingNumber"/>
+                    <result property="hasNight" column="HasNight"/>
+                    <result property="startOperation" column="StartOperation"/>
+                    <result property="endOperation" column="EndOperation"/>
+                    <result property="nightStart" column="NightStart"/>
+                    <result property="nightEnd" column="NightEnd"/>
+                    <result property="corpID" column="CorpID"/>
+                    <result property="systemId" column="SystemId"/>
+                    <result property="version" column="Version"/>
+                    <result property="isExternal" column="IsExternal"/>
+                    
+            </resultMap>  -->
+
+    <insert id="addMerchant">
+        insert into Merchant (
+                                            Id
+                                                ,  CreatedOn
+                                                ,  CreatedBy
+                                                ,  ModifiedOn
+                                                ,  ModifiedBy
+                                                ,  IsDeleted
+                                                ,  Organization_ID
+                                                ,  MName
+                                                ,  Code
+                                                ,  Title
+                                                ,  MManager
+                                                ,  ContactTel
+                                                ,  ServiceTel
+                                                ,  Address
+                                                ,  Province
+                                                ,  City
+                                                ,  Distict
+                                                ,  Type
+                                                ,  Levels
+                                                ,  Status
+                                                ,  Description
+                                                ,  ID_Organization_Type
+                                                ,  ImageUrl
+                                                ,  Longitude
+                                                ,  Latitude
+                                                ,  IsHighQualityMerchants
+                                                ,  ParkingNumber
+                                                ,  HasNight
+                                                ,  StartOperation
+                                                ,  EndOperation
+                                                ,  NightStart
+                                                ,  NightEnd
+                                                ,  CorpID
+                                                ,  SystemId
+                                                ,  Version
+                                                ,  IsExternal
+                                                ,  FirstCategoryId
+                                                ,  SecondCategoryId
+                            ) values (
+                                            #{id}
+                                                                                    , #{createdOn}
+                                                                                    , #{createdBy}
+                                                                                    , #{modifiedOn}
+                                                                                    , #{modifiedBy}
+                                                                                    , 0
+                                                                                    , #{organizationId}
+                                                                                    , #{mName}
+                                                                                    , #{code}
+                                                                                    , #{title}
+                                                                                    , #{mManager}
+                                                                                    , #{contactTel}
+                                                                                    , #{serviceTel}
+                                                                                    , #{address}
+                                                                                    , #{province}
+                                                                                    , #{city}
+                                                                                    , #{distict}
+                                                                                    , #{type}
+                                                                                    , #{levels}
+                                                                                    , #{status}
+                                                                                    , #{description}
+                                                                                    , #{idOrganizationType}
+                                                                                    , #{imageUrl}
+                                                                                    , #{longitude}
+                                                                                    , #{latitude}
+                                                                                    , #{isHighQualityMerchants}
+                                                                                    , #{parkingNumber}
+                                                                                    , #{hasNight}
+                                                                                    , #{startOperation}
+                                                                                    , #{endOperation}
+                                                                                    , #{nightStart}
+                                                                                    , #{nightEnd}
+                                                                                    , #{corpID}
+                                                                                    , #{systemId}
+                                                                                    , #{version}
+                                                                                    , #{isExternal}
+                                                                                    , #{firstCategoryId}
+                                                                                    , #{secondCategoryId}
+                                            )
+    </insert>
+
+    <update id="update">
+        update
+        Merchant
+        <set>
+                                                                        	                    <if test="createdOn != null">CreatedOn =
+                        #{createdOn},
+                    </if>
+                                                                                	                    <if test="createdBy != null and createdBy != ''">CreatedBy =
+                        #{createdBy},
+                    </if>
+                  		<if test="modifiedOn!=null ">ModifiedOn =#{modifiedOn},</if>
+                  		<if test="modifiedOn==null ">ModifiedOn=now(),</if>
+           
+                       <if test="modifiedBy != null and modifiedBy != ''">ModifiedBy =#{modifiedBy},</if>
+                                                                                	                    <if test="organizationId != null and organizationId != ''">Organization_ID =
+                        #{organizationId},
+                    </if>
+                                                                                 	                    <if test="mName != null and mName != ''">MName =
+                        #{mName},
+                    </if>
+                                                                                	                    <if test="code != null and code != ''">Code =
+                        #{code},
+                    </if>
+                     Title =
+                        #{title},
+                    MManager =
+                        #{mManager},
+                     
+                		ContactTel =#{contactTel},
+                		ServiceTel =#{serviceTel},
+                   Address =
+                        #{address},
+                   
+                                                                                	                    <if test="province != null and province != ''">Province =
+                        #{province},
+                    </if>
+                                                                                	                    <if test="city != null and city != ''">City =
+                        #{city},
+                    </if>
+                                                                                	                    <if test="distict != null and distict != ''">Distict =
+                        #{distict},
+                    </if>
+                                                                                	                    <if test="type != null">Type =
+                        #{type},
+                    </if>
+                                                                                	                    <if test="levels != null">Levels =
+                        #{levels},
+                    </if>
+                                                                                	                    <if test="status != null">Status =
+                        #{status},
+                    </if>
+                    Description =
+                        #{description},
+                     
+                                                                                	                    <if test="idOrganizationType != null">ID_Organization_Type =
+                        #{idOrganizationType},
+                    </if>
+                                                                                	                    <if test="imageUrl != null and imageUrl != ''">ImageUrl =
+                        #{imageUrl},
+                    </if>
+                                                                                	                    <if test="longitude != null">Longitude =
+                        #{longitude},
+                    </if>
+                                                                                	                    <if test="latitude != null">Latitude =
+                        #{latitude},
+                    </if>
+                                                                                	                    <if test="isHighQualityMerchants != null">IsHighQualityMerchants =
+                        #{isHighQualityMerchants},
+                    </if>
+                    ParkingNumber =
+                        #{parkingNumber},
+                    
+                                                                                	                    <if test="hasNight != null">HasNight =
+                        #{hasNight},
+                    </if>
+                                                                                	                    <if test="startOperation != null and startOperation != ''">StartOperation =
+                        #{startOperation},
+                    </if>
+                                                                                	                    <if test="endOperation != null and endOperation != ''">EndOperation =
+                        #{endOperation},
+                    </if>
+                                                                                	                    <if test="nightStart != null and nightStart != ''">NightStart =
+                        #{nightStart},
+                    </if>
+                                                                                	                    <if test="nightEnd != null and nightEnd != ''">NightEnd =
+                        #{nightEnd},
+                    </if>
+                                                                                	                    <if test="corpID != null and corpID != ''">CorpID =
+                        now(),
+                    </if>
+                    SystemId =#{systemId},
+                    Version =#{version},
+                    IsExternal = #{isExternal},
+                    FirstCategoryId =#{firstCategoryId},
+                    SecondCategoryId = #{secondCategoryId}
+                                                        </set>
+                    where
+                                                                                    Id = #{id} and version=#{oldVersion}
+ </update>
+
+    <select id="getById" resultType="com.mdm.pojo.Merchant">
+        select
+                                            Id
+                                                , DATE_FORMAT(CreatedOn,'%Y-%m-%d %H:%i:%s') as createdOn
+                                                , CreatedBy
+                                                , DATE_FORMAT(ModifiedOn,'%Y-%m-%d %H:%i:%s') as modifiedOn
+                                                , ModifiedBy
+                                                , IsDeleted
+                                                , Organization_ID as organizationId
+                                                , MName
+                                                , Code
+                                                , Title
+                                                , MManager
+                                                , ContactTel
+                                                , ServiceTel
+                                                , Address
+                                                , Province
+                                                , City
+                                                , Distict
+                                                , Type
+                                                , Levels
+                                                , Status
+                                                , Description
+                                                , ID_Organization_Type as idOrganizationType
+                                                , ImageUrl
+                                                , Longitude
+                                                , Latitude
+                                                , IsHighQualityMerchants
+                                                , ParkingNumber
+                                                , HasNight
+                                                , StartOperation
+                                                , EndOperation
+                                                , NightStart
+                                                , NightEnd
+                                                , CorpID
+                                                , SystemId
+                                                , Version
+                                                , IsExternal
+                                                , FirstCategoryId
+                                                , SecondCategoryId
+                            from
+        Merchant
+                    where
+                                                                                    Id = #{id}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </select>
+
+    <delete id="deleteById">
+        update
+        	Merchant
+        set
+        	IsDeleted = '1',
+        	ModifiedOn = now(),
+        	ModifiedBy = #{modifiedBy},
+        	Version = #{version}
+        where Id = #{id}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </delete>
+
+    <select id="queryMerchantList"  resultType="com.mdm.response.MerchantResponse">
+        select
+                                            Id
+                                                , DATE_FORMAT(CreatedOn,'%Y-%m-%d %H:%i:%s') as createdOn
+                                                , CreatedBy
+                                                , DATE_FORMAT(ModifiedOn,'%Y-%m-%d %H:%i:%s') as modifiedOn
+                                                , ModifiedBy
+                                                , IsDeleted
+                                                , Organization_ID as organizationId
+                                                , MName
+                                                , Code
+                                                , Title
+                                                , MManager
+                                                , ContactTel
+                                                , ServiceTel
+                                                , Address
+                                                , Province
+                                                , City
+                                                , Distict
+                                                , Type
+                                                , Levels
+                                                , Status
+                                                , Description
+                                                , ID_Organization_Type as idOrganizationType
+                                                , ImageUrl
+                                                , Longitude
+                                                , Latitude
+                                                , IsHighQualityMerchants
+                                                , ParkingNumber
+                                                , HasNight
+                                                , StartOperation
+                                                , EndOperation
+                                                , NightStart
+                                                , NightEnd
+                                                , CorpID
+                                                , SystemId
+                                                , Version
+                                                , IsExternal
+                                                , FirstCategoryId
+                                                , SecondCategoryId
+                            from
+        Merchant
+        <where>
+        		1=1 and IsDeleted = 0 
+        	 	<if test="mName != null and mName!=''"> and MName 
+                        LIKE CONCAT('%',#{mName},'%')</if>
+                <if test="code != null and code!=''"> and Code 
+                        LIKE CONCAT('%',#{code},'%')</if>
+                <if test="mManager != null and mManager!=''"> and MManager 
+                        LIKE CONCAT('%',#{mManager},'%')</if>
+                <if test="contactTel != null and contactTel!=''"> and ContactTel 
+                        LIKE CONCAT('%',#{contactTel},'%')</if>       
+                <if test="firstCategoryId != null and firstCategoryId!=''"> and FirstCategoryId 
+                        =#{firstCategoryId} </if>    
+                <if test="status != null and status!=''"> and Status 
+                        =#{status} </if>  
+                <if test="systemId != null and systemId != ''">
+                	 and SystemId = #{systemId} 
+              	</if>                    
+            
+        </where>
+        	order by CreatedOn DESC
+    </select>
+    
+    <select id="queryMerchantsForUser"  resultType="com.mdm.response.MerchantResponse">
+        select Id, CONCAT(MName, '【', `Code`, '】') MName, `Code` from Merchant
+        <where>
+       		1=1 and IsDeleted = 0               
+        </where>
+        	order by CreatedOn DESC
+    </select>
+    
+        <select id="queryMerchantCheck"  resultType="com.mdm.pojo.Merchant">
+        select
+                                            Id
+                                                , DATE_FORMAT(CreatedOn,'%Y-%m-%d %H:%i:%s') as createdOn
+                                                , CreatedBy
+                                                , DATE_FORMAT(ModifiedOn,'%Y-%m-%d %H:%i:%s') as modifiedOn
+                                                , ModifiedBy
+                                                , IsDeleted
+                                                , Organization_ID as organizationId
+                                                , MName
+                                                , Code
+                                                , Title
+                                                , MManager
+                                                , ContactTel
+                                                , ServiceTel
+                                                , Address
+                                                , Province
+                                                , City
+                                                , Distict
+                                                , Type
+                                                , Levels
+                                                , Status
+                                                , Description
+                                                , ID_Organization_Type as idOrganizationType
+                                                , ImageUrl
+                                                , Longitude
+                                                , Latitude
+                                                , IsHighQualityMerchants
+                                                , ParkingNumber
+                                                , HasNight
+                                                , StartOperation
+                                                , EndOperation
+                                                , NightStart
+                                                , NightEnd
+                                                , CorpID
+                                                , SystemId 
+                                                , Version
+                                                , IsExternal
+                                                , SecondCategoryId
+                                                , FirstCategoryId
+                            from
+        Merchant
+        <where>
+        		1=1  
+        	 	<if test="mName != null"> and MName 
+                        LIKE CONCAT('%',#{mName},'%')</if>
+                <if test="code != null"> and Code = #{code}</if>
+            
+        </where>
+        	order by CreatedOn DESC
+    </select>
+    <select id="getMerchantById" resultType="com.mdm.pojo.Merchant">
+        select
+                                            Id
+                                                , DATE_FORMAT(CreatedOn,'%Y-%m-%d %H:%i:%s') as createdOn
+                                                , CreatedBy
+                                                , DATE_FORMAT(ModifiedOn,'%Y-%m-%d %H:%i:%s') as modifiedOn
+                                                , ModifiedBy
+                                                , IsDeleted
+                                                , Organization_ID as organizationId
+                                                , MName
+                                                , Code
+                                                , Title
+                                                , MManager
+                                                , ContactTel
+                                                , ServiceTel
+                                                , Address
+                                                , Province
+                                                , City
+                                                , Distict
+                                                , Type
+                                                , Levels
+                                                , Status
+                                                , Description
+                                                , ID_Organization_Type as idOrganizationType
+                                                , ImageUrl
+                                                , Longitude
+                                                , Latitude
+                                                , IsHighQualityMerchants
+                                                , ParkingNumber
+                                                , HasNight
+                                                , StartOperation
+                                                , EndOperation
+                                                , NightStart
+                                                , NightEnd
+                                                , CorpID
+                                                , SystemId
+                                                , Version
+                                                , IsExternal
+                                                , SecondCategoryId
+                                                , FirstCategoryId
+                            from
+        Merchant
+                    where
+                                                                                    Id = #{id}
+		</select>
+		
+		<select id="batchQueryMerchantListById"  resultType="com.mdm.pojo.Merchant">
+     	select
+     	Id as id,
+     		MName as mName
+     	from
+     		Merchant
+     	where
+     		Id in (
+     	<foreach collection="list" item="tfo" index="index" separator=","> 
+		#{tfo}
+        </foreach>)
+     </select>
+     <select id="queryMerchantType" resultType="com.mdm.pojo.MerchantCategory">
+     	select Id,Code,Name,ParentId
+     	from MerchantCategory
+     	where IsDeleted=0
+     	 <if test="parentId ==null or parentId==''" > and ParentId is NULL</if>
+     	 <if test="parentId != null and parentId != ''">and ParentId = #{parentId} </if>
+     </select>
+    <select id="querySecondMerchantType" resultType="com.mdm.pojo.MerchantCategory">
+        select Id,Code,Name,ParentId
+        from MerchantCategory
+        where IsDeleted=0 and ParentId is NOT NULL
+    </select>
+     
+     <select id="exportMerchantList" resultType="com.mdm.exportBean.MerchantExport">
+     	select
+			id
+			, code
+			, mName
+			, mManager
+			, contactTel
+			, serviceTel
+			, status
+			, SystemId as system
+			, Organization_ID as organization
+			, FirstCategoryId
+			, SecondCategoryId
+			, province
+			, city
+			, distict
+			, hasNight
+			, isHighQualityMerchants
+			, parkingNumber
+			, startOperation
+			, endOperation
+			, nightStart
+			, nightEnd
+			, isExternal
+			, address
+			, title
+			, description
+		from Merchant
+		<where>
+        		IsDeleted = 0 
+        	 	<if test="mName != null and mName!=''"> and MName 
+                        LIKE CONCAT('%',#{mName},'%')</if>
+                <if test="code != null and code!=''"> and Code 
+                        LIKE CONCAT('%',#{code},'%')</if>
+                <if test="mManager != null and mManager!=''"> and MManager 
+                        LIKE CONCAT('%',#{mManager},'%')</if>
+                <if test="contactTel != null and contactTel!=''"> and ContactTel 
+                        LIKE CONCAT('%',#{contactTel},'%')</if>       
+                <if test="firstCategoryId != null and firstCategoryId!=''"> and FirstCategoryId 
+                        =#{firstCategoryId} </if>    
+                <if test="status != null and status!=''"> and Status 
+                        =#{status} </if>                    
+            
+        </where>
+        	order by CreatedOn DESC
+     </select>
+     
+     <insert id="batchInsert">
+		insert into Merchant (
+			Id
+				,  CreatedOn
+				,  CreatedBy
+				,  ModifiedOn
+				,  ModifiedBy
+				,  IsDeleted
+				,  Organization_ID
+				,  MName
+				,  Code
+				,  Title
+				,  MManager
+				,  ContactTel
+				,  ServiceTel
+				,  Address
+				,  Province
+				,  City
+				,  Distict
+				,  Type
+				,  Levels
+				,  Status
+				,  Description
+				,  ID_Organization_Type
+				,  ImageUrl
+				,  Longitude
+				,  Latitude
+				,  IsHighQualityMerchants
+				,  ParkingNumber
+				,  HasNight
+				,  StartOperation
+				,  EndOperation
+				,  NightStart
+				,  NightEnd
+				,  CorpID
+				,  SystemId
+				,  Version
+				,  IsExternal
+				,  FirstCategoryId
+				,  SecondCategoryId
+			) values 
+			<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id}
+				, #{item.createdOn}
+				, #{item.createdBy}
+				, #{item.modifiedOn}
+				, #{item.modifiedBy}
+				, 0
+				, #{item.organizationId}
+				, #{item.mName}
+				, #{item.code}
+				, #{item.title}
+				, #{item.mManager}
+				, #{item.contactTel}
+				, #{item.serviceTel}
+				, #{item.address}
+				, #{item.province}
+				, #{item.city}
+				, #{item.distict}
+				, #{item.type}
+				, #{item.levels}
+				, #{item.status}
+				, #{item.description}
+				, #{item.idOrganizationType}
+				, #{item.imageUrl}
+				, #{item.longitude}
+				, #{item.latitude}
+				, #{item.isHighQualityMerchants}
+				, #{item.parkingNumber}
+				, #{item.hasNight}
+				, #{item.startOperation}
+				, #{item.endOperation}
+				, #{item.nightStart}
+				, #{item.nightEnd}
+				, #{item.corpID}
+				, #{item.systemId}
+				, #{item.version}
+				, #{item.isExternal}
+				, #{item.firstCategoryId}
+				, #{item.secondCategoryId}
+			)
+			</foreach>
+		</insert>
+     
+     <update id="batchUpdate">
+     <foreach collection="list" item="item" index="index" separator=";">
+		update Merchant
+		<set>
+			<if test="item.modifiedOn!=null ">ModifiedOn =
+						#{item.modifiedOn},</if>
+			<if test="item.modifiedOn==null ">ModifiedOn=
+						now(),</if>
+			<if test="item.modifiedBy != null and item.modifiedBy != ''">ModifiedBy =
+						#{item.modifiedBy},</if>
+			<if test="item.organizationId != null and item.organizationId != ''">Organization_ID =
+                        #{item.organizationId},</if>
+			<if test="item.mName != null and item.mName != ''">MName =
+                        #{item.mName},</if>
+			<if test="item.code != null and item.code != ''">Code =
+                        #{item.code},</if>
+            <if test="item.title != null and item.title != ''">Title =
+                        #{item.title},</if>
+			<if test="item.mManager != null and item.mManager != ''">MManager =
+                        #{item.mManager},</if>
+			<if test="item.contactTel != null and item.contactTel != ''">ContactTel =
+						#{item.contactTel},</if>
+			<if test="item.serviceTel != null and item.serviceTel != ''">ServiceTel =
+						#{item.serviceTel},</if>
+			<if test="item.address != null and item.address != ''">Address =
+						#{item.address},</if>
+			<if test="item.province != null and item.province != ''">Province =
+						#{item.province},</if>
+			<if test="item.city != null and item.city != ''">City =
+						#{item.city},</if>
+			<if test="item.distict != null and item.distict != ''">Distict =
+						#{item.distict},</if>
+			<if test="item.type != null">Type =
+						#{item.type},</if>
+			<if test="item.levels != null">Levels =
+						#{item.levels},</if>
+			<if test="item.status != null">Status =
+						#{item.status},</if>
+            <if test="item.description != null">Description =
+                        #{item.description},</if>
+			<if test="item.idOrganizationType != null">ID_Organization_Type =
+                        #{item.idOrganizationType},</if>
+			<if test="item.imageUrl != null and imageUrl != ''">ImageUrl =
+                        #{item.imageUrl},</if>
+			<if test="item.longitude != null">Longitude =
+                        #{item.longitude},</if>
+			<if test="item.latitude != null">Latitude =
+                        #{item.latitude},</if>
+			<if test="item.isHighQualityMerchants != null">IsHighQualityMerchants =
+                        #{item.isHighQualityMerchants},</if>
+            <if test="item.parkingNumber != null">ParkingNumber =
+                        #{item.parkingNumber},</if>
+			<if test="item.hasNight != null">HasNight =
+                        #{item.hasNight},</if>
+			<if test="item.startOperation != null and item.startOperation != ''">StartOperation =
+                        #{item.startOperation},</if>
+			<if test="item.endOperation != null and item.endOperation != ''">EndOperation =
+                        #{item.endOperation},</if>
+			<if test="item.nightStart != null and item.nightStart != ''">NightStart =
+                        #{item.nightStart},</if>
+			<if test="item.nightEnd != null and item.nightEnd != ''">NightEnd =
+                        #{item.nightEnd},</if>
+			<if test="item.corpID != null and item.corpID != ''">CorpID =
+                        #{item.corpID},</if>
+            <if test="item.systemId != null and item.systemId != ''">SystemId =
+            			#{item.systemId},</if>
+            <if test="item.version != null and item.version != ''">Version =
+            			#{item.version},</if>
+            <if test="item.isExternal != null and item.isExternal != ''">IsExternal =
+            			#{item.isExternal},</if>
+            <if test="item.firstCategoryId != null and item.firstCategoryId != ''">FirstCategoryId =
+            			#{item.firstCategoryId},</if>
+            <if test="item.secondCategoryId != null and item.secondCategoryId != ''">SecondCategoryId = 
+            			#{item.secondCategoryId}</if>
+		</set>
+        where Id = #{item.id}
+    </foreach>
+	</update>
+     
+     <select id="queryCodeIdMap" resultType="com.mdm.importBean.MerchantCodeId">
+		select
+		Id
+		, Code
+		FROM
+		Merchant
+	</select>
+	<update id="updatePointAccount">
+		UPDATE Merchant
+		SET PointAccountId = #{pointAccountId}, IsExcepted = #{isExcepted}, ModifiedOn = now(), ModifiedBy = #{modifiedBy}
+		WHERE
+			Id = #{id}
+	</update>
+	<select id="queryPointAccount" resultType="com.mdm.pojo.Merchant">
+		select Id, PointAccountId, IsExcepted
+		from
+		Merchant
+		where
+		Id = #{id}
+		and IsDeleted = '0'
+	</select>
+	<select id="queryMerchantIdByAccount" resultType="java.util.Map">
+		select
+		id AS orgId,
+		type AS orgType,
+		CASE
+		WHEN IsExcepted = 1 THEN
+			'true'
+		WHEN IsExcepted = 0 THEN
+			'false'
+		ELSE
+			'false'
+		END AS isExcepted,
+		'merchant' AS type
+		from
+		Merchant
+		where
+		PointAccountId = #{pointAccountId}
+		and IsDeleted = '0'
+	</select>
+	<update id="resetPointAccount">
+		UPDATE Merchant
+		SET PointAccountId = NULL,
+		 IsExcepted = NULL
+		WHERE
+			PointAccountId = #{pointAccountId}
+	</update>
+</mapper>

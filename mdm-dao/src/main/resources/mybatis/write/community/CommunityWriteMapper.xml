@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdm.dao.write.community.CommunityWriteMapper">
+
+   <sql id="select_sql">
+   Id
+		, Code
+		, Name
+		, AreaId
+		, IsDeleted
+   </sql>
+	<resultMap id="Community" type="com.mdm.pojo.Community">
+		<result property="id" column="Id" />
+		<result property="code" column="Code" />
+		<result property="name" column="Name" />
+		<result property="areaId" column="AreaId" />
+		<result property="isDeleted" column="IsDeleted" />
+	</resultMap>
+
+	 <select id="queryCommunityByAreaid"    resultMap="Community">
+		select
+		 <include refid="select_sql" />
+		from
+		Community
+		<where>
+            AreaId = #{areaId} 
+		</where>
+	</select>
+	
+	<select id="queryCodeIdMap" resultType="com.mdm.importBean.CommunityCodeId">
+		select
+		Id
+		, Code
+		, Name
+		FROM
+		Community
+	</select>
+	
+	<select id="queryCommunityById"    resultMap="Community">
+		select
+		 <include refid="select_sql" />
+		from
+		Community
+		<where>
+            Id = #{id} 
+		</where>
+	</select>
+</mapper>
